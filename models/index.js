@@ -43,6 +43,7 @@ const initModels = () => {
     State.hasMany(Provider, {foreignKey: 'status_provider' });
 
 
+    
 
     Role.belongsToMany(Permission, {
       through: RolePerm,
