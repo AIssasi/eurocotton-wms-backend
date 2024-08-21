@@ -1,5 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
+const State = require('./State');
 
 class Brand extends Model {}
 
@@ -27,7 +28,11 @@ Brand.init({
     },
     status_brand:{
         type:DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references:{
+            model: State,
+            key: 'id_status'
+          }
     },
 },{
     sequelize,
