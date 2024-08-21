@@ -13,6 +13,7 @@ const State = require('./State');
 const Warehouse = require('./Warehouse');
 const Provider = require('./Provider');
 const Order = require('./Order');
+const orderType = require('./orderType');
 
 const initModels = () => {
     // Definir relaciones
@@ -46,6 +47,8 @@ const initModels = () => {
     Order.belongsTo(Warehouse, {foreignKey: 'source_order', as: 'warehouse' });
     Warehouse.hasMany(Order, {foreignKey: 'source_order' });
    
+    Order.belongsTo(orderType, {foreignKey: 'type_order', as: 'ordertype' });
+    orderType.hasMany(Order, {foreignKey: 'type_order' });
   
 
 

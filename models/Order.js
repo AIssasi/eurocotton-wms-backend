@@ -1,6 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 const Warehouse = require('./Warehouse');
+const OrderType = require('./orderType');
 
 class Order extends Model {}
 
@@ -35,7 +36,11 @@ Order.init({
         allowNull: false,
         validate:{
             len:[1, 10]
-        }
+        },
+        references:{
+            model: OrderType,
+            key: 'id_ordertype'
+          }
     },
     provider_order:{
         type:DataTypes.INTEGER,
