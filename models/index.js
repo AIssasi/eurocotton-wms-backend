@@ -8,7 +8,8 @@ const Product = require('./Product');
 const Brand = require('./Brand');
 const Category = require('./Category');
 const Composition = require('./Composition');
-const Color = require('./Color')
+const Color = require('./Color');
+const State = require('./State')
 
 const initModels = () => {
     // Definir relaciones
@@ -26,6 +27,9 @@ const initModels = () => {
 
     Product.belongsTo(Color, {foreignKey: 'color_product', as: 'color' });
     Color.hasMany(Product, {foreignKey: 'color_product' });
+
+    Product.belongsTo(State, {foreignKey: 'status_product', as: 'state' });
+    State.hasMany(Product, {foreignKey: 'status_product' });
 
 
 
@@ -58,6 +62,7 @@ const initModels = () => {
     Brand,
     Category,
     Composition,
-    Color
+    Color,
+    State
    
   };

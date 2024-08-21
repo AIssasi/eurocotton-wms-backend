@@ -4,6 +4,7 @@ const Brand = require('./Brand');
 const Category = require('./Category');
 const Composition = require('./Composition');
 const Color = require('./Color');
+const State = require('./State');
 
 
 class Product extends Model {}
@@ -52,8 +53,6 @@ module.exports = {}
          model: Category,
          key: 'id_category'
        }
-
-    
     },
     composition_product: {
       type: DataTypes.INTEGER,
@@ -62,8 +61,6 @@ module.exports = {}
          model: Composition,
          key: 'id_composition'
       }
-
-     
     },
     color_product: {
       type: DataTypes.INTEGER,
@@ -72,8 +69,6 @@ module.exports = {}
          model: Color,
          key: 'id_color'
        }
-
-      
     },
     weight_product: {
       type: DataTypes.DOUBLE,
@@ -82,6 +77,10 @@ module.exports = {}
     status_product: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references:{
+        model: State,
+        key: 'id_status'
+      }
       
     },
     
