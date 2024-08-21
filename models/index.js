@@ -39,7 +39,11 @@ const initModels = () => {
     Warehouse.belongsTo(State, {foreignKey: 'status_warehouse', as: 'state' });
     State.hasMany(Warehouse, {foreignKey: 'status_warehouse' });
 
+    Provider.belongsTo(State, {foreignKey: 'status_provider', as: 'state' });
+    State.hasMany(Provider, {foreignKey: 'status_provider' });
 
+
+    
 
     Role.belongsToMany(Permission, {
       through: RolePerm,
