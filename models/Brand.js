@@ -35,6 +35,7 @@ Brand.init({
     tableName:'Brands',
     timestamps: true,
     underscored: true
+    
 });
 
 module.exports = Brand;
