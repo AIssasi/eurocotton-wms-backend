@@ -32,6 +32,7 @@ const initModels = () => {
     });
   };
 
+  
   // Inicializar modelos y relaciones
     initModels();
 
