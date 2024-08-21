@@ -28,8 +28,8 @@ const initModels = () => {
     Product.belongsTo(Color, {foreignKey: 'color_product', as: 'color' });
     Color.hasMany(Product, {foreignKey: 'color_product' });
 
-    Product.belongsTo(State, {foreignKey: 'status_product', as: 'state' });
-    State.hasMany(Product, {foreignKey: 'status_product' });
+    Brand.belongsTo(State, {foreignKey: 'status_brand', as: 'state' });
+    State.hasMany(Brand, {foreignKey: 'status_brand' });
 
 
 
