@@ -2,6 +2,7 @@ const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 const Brand = require('./Brand');
 const Category = require('./Category');
+const Composition = require('./Composition');
 
 
 class Product extends Model {}
@@ -56,6 +57,11 @@ module.exports = {}
     composition_product: {
       type: DataTypes.INTEGER,
       allowNull: false,
+        references:{
+         model: Composition,
+         key: 'id_composition'
+      }
+
      
     },
     color_product: {

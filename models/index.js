@@ -7,6 +7,7 @@ const RolePerm = require('./rolePerm');
 const Product = require('./Product');
 const Brand = require('./Brand');
 const Category = require('./Category');
+const Composition = require('./Composition')
 
 const initModels = () => {
     // Definir relaciones
@@ -18,6 +19,9 @@ const initModels = () => {
       
     Product.belongsTo(Category, {foreignKey: 'category_product', as: 'category' });
     Category.hasMany(Product, {foreignKey: 'category_product' });
+
+    Product.belongsTo(Composition, {foreignKey: 'composition_product', as: 'composition' });
+    Composition.hasMany(Product, {foreignKey: 'composition_product' });
 
 
     Role.belongsToMany(Permission, {
@@ -47,6 +51,7 @@ const initModels = () => {
     RolePerm,
     Product,
     Brand,
-    Category
+    Category,
+    Composition
    
   };
