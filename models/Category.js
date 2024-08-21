@@ -1,5 +1,6 @@
  const { DataTypes, Model } = require('sequelize')
- const sequelize = require('../config/database')
+ const sequelize = require('../config/database');
+const State = require('./State');
 
  class Category extends Model {}
 
@@ -26,7 +27,11 @@
      },
      status_category:{
          type:DataTypes.INTEGER,
-         allowNull: false
+         allowNull: false,
+         references:{
+            model: State,
+            key: 'id_status'
+          }
      }
  },{
      sequelize,
