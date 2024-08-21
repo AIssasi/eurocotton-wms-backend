@@ -31,7 +31,8 @@ const initModels = () => {
     Brand.belongsTo(State, {foreignKey: 'status_brand', as: 'state' });
     State.hasMany(Brand, {foreignKey: 'status_brand' });
 
-
+    Category.belongsTo(State, {foreignKey: 'status_category', as: 'state' });
+    State.hasMany(Category, {foreignKey: 'status_category' });
 
     Role.belongsToMany(Permission, {
       through: RolePerm,
