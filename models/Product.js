@@ -1,30 +1,72 @@
 const { DataTypes, Model } = require('sequelize');
+const sequelize = require('../config/database');
+const Brand = require('./Brand');
+
 
 class Product extends Model {}
 
-module.exports = (sequelize) => {
+module.exports = {}
   Product.init({
-    id: {
+    id_product: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false
     },
-    code: {
+    name_product:{
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
-        len: [1, 50] // Validación: longitud mínima y máxima del código del producto
+        len:[1, 200]
       }
     },
-    description: {
+    description_product: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 255] // Validación: longitud mínima y máxima de la descripción del producto
+        len: [1, 200] // Validación: longitud mínima y máxima de la descripción del producto
       }
-    }
+    },
+    sku_product: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 200] // Validación: longitud mínima y máxima del código del producto
+      }
+    },
+    brand_product: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references:{
+        model: Brand,
+        key: 'id_brand'
+      }
+    },
+    category_product: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    
+    },
+    composition_product: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+     
+    },
+    color_product: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      
+    },
+    weight_product: {
+      type: DataTypes.DOUBLE,
+      allowNull: false
+    },
+    status_product: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      
+    },
+    
   }, {
     sequelize, // Instancia de Sequelize
     modelName: 'Product', // Nombre del modelo
@@ -33,5 +75,4 @@ module.exports = (sequelize) => {
     underscored: true // Utiliza nombres de columnas en formato snake_case
   });
 
-  return Product;
-};
+ module.exports = Product;
