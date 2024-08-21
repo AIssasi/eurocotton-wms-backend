@@ -49,6 +49,7 @@ const initModels = () => {
   
 
 
+    
 
     Role.belongsToMany(Permission, {
       through: RolePerm,
