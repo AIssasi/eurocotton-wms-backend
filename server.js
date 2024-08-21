@@ -17,6 +17,11 @@ const cors = require('cors');
 const errorHandler = require('./middleware/errorHandler');
 const log = require('./middleware/logs/logger')
 
+const {
+  DB_SYNC,
+  DB_SYNC_FORCE
+} = process.env;
+
 
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -45,7 +50,14 @@ app.use(errorHandler);
 
 // Sincronizar los modelos con la base de datos
 (async () => {
-  await sequelize.sync();
+  if(DB_SYNC == 'true' && DB_SYNC_FORCE == 'false'){
+    await sequelize.sync();
+  }else if(DB_SYNC == 'true' && DB_SYNC_FORCE == 'true'){
+    await sequelize.sync({force: true});
+  }else{
+    await sequelize.authenticate();
+  }
+  
   
   const PORT = process.env.PORT || 3000;
 
