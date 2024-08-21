@@ -4,13 +4,19 @@ const User = require('./User');
 const Role = require('./Role');
 const Permission = require('./Permission');
 const RolePerm = require('./rolePerm');
+const Product = require('./Product');
+const Brand = require('./Brand');
 
 
 const initModels = () => {
     // Definir relaciones
     User.belongsTo(Role, { foreignKey: 'role_user', as: 'role' });
     Role.hasMany(User, { foreignKey: 'role_user' });
-  
+
+    Product.belongsTo(Brand, {foreignKey: 'brand_product', as: 'brand' });
+    Brand.hasMany(Product, {foreignKey: 'brand_product' });
+      
+
     Role.belongsToMany(Permission, {
       through: RolePerm,
       foreignKey: 'role_roleperm',
@@ -26,6 +32,7 @@ const initModels = () => {
     });
   };
 
+  
   // Inicializar modelos y relaciones
     initModels();
 
@@ -34,5 +41,8 @@ const initModels = () => {
     User,
     Role,
     Permission,
-    RolePerm
+    RolePerm,
+    Product,
+    Brand,
+   
   };
