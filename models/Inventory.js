@@ -1,6 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 const Product = require('./Product');
+const Warehouse = require('./Warehouse');
 
 class Inventory extends Model {}
 
@@ -34,7 +35,11 @@ Inventory.init({
         allowNull: false,
         validate:{
             len:[1,10]
-        }
+        },
+        references:{
+            model: Warehouse,
+            key: 'id_warehouse'
+          }
     },
 
 },{
