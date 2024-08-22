@@ -50,8 +50,9 @@ const initModels = () => {
     Order.belongsTo(orderType, {foreignKey: 'type_order', as: 'ordertype' });
     orderType.hasMany(Order, {foreignKey: 'type_order' });
   
-
-
+    Order.belongsTo(Warehouse, {foreignKey: 'destination_order', as: 'Warehouse' });
+    Warehouse.hasMany(Order, {foreignKey: 'destination_order' });
+   
     
 
     Role.belongsToMany(Permission, {
