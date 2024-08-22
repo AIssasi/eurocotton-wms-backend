@@ -73,6 +73,9 @@ const initModels = () => {
 
     itemOrder.belongsTo(Order, {foreignKey: 'order_itemorder', as: 'order' });
     Order.hasMany(itemOrder, {foreignKey: 'order_itemorder' });
+
+    itemOrder.belongsTo(Product, {foreignKey: 'product_itemorder', as: 'product' });
+    Product.hasMany(itemOrder, {foreignKey: 'product_itemorder' });
     
 
     Role.belongsToMany(Permission, {
