@@ -14,6 +14,7 @@ const Warehouse = require('./Warehouse');
 const Provider = require('./Provider');
 const Order = require('./Order');
 const orderType = require('./orderType');
+const Movement = require('./Movement');
 
 const initModels = () => {
     // Definir relaciones
@@ -53,6 +54,9 @@ const initModels = () => {
     Order.belongsTo(Warehouse, {foreignKey: 'destination_order', as: 'Warehouse' });
     Warehouse.hasMany(Order, {foreignKey: 'destination_order' });
    
+    Movement.belongsTo(Product, {foreignKey: 'product_movement', as: 'product' });
+    Product.hasMany(Movement, {foreignKey: 'product_movement' });
+    
     
 
     Role.belongsToMany(Permission, {
@@ -88,7 +92,8 @@ const initModels = () => {
     State,
     Warehouse,
     Provider,
-    Order
+    Order,
+    Movement
     
    
   };
