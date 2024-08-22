@@ -29,7 +29,11 @@ Order.init({
         allowNull: false,
         validate:{
             len:[1, 10]
-        }
+        },
+        references:{
+            model: Warehouse,
+            key: 'id_warehouse'
+          }
     },
     type_order:{
         type:DataTypes.INTEGER,
