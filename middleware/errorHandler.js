@@ -1,7 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const log = require('./logs/logger');
 
-const errorHandler = (err, req, res, next) => {// eslint-disable-line no-unused-vars
+const errorHandler = (err, req, res, _next) => {
   let error = { ...err };
 
   // Establecer el mensaje del error
