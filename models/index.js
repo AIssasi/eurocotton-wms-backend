@@ -67,6 +67,10 @@ const initModels = () => {
     Inventory.belongsTo(Product, {foreignKey: 'product_inventory', as: 'product' });
     Product.hasMany(Inventory, {foreignKey: 'product_inventory' });
 
+    Inventory.belongsTo(Warehouse, {foreignKey: 'warehouse_inventory', as: 'warehouse' });
+    Warehouse.hasMany(Inventory, {foreignKey: 'warehouse_inventory' });
+    
+
     Role.belongsToMany(Permission, {
       through: RolePerm,
       foreignKey: 'role_roleperm',
@@ -102,7 +106,7 @@ const initModels = () => {
     Provider,
     Order,
     Movement,
-    Inventory
+    Inventory,
     
    
   };
