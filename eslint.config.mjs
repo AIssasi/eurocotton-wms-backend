@@ -14,4 +14,9 @@ export default [
     }
   }},
   pluginJs.configs.recommended,
+  {
+    rules: {
+      'no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
+    },
+  }
 ];
