@@ -1,12 +1,11 @@
 const ErrorResponse = require('../utils/errorResponse');
 const log = require('./logs/logger');
 
-const errorHandler = (err, req, res) => {
+const errorHandler = (err, req, res, next) => {// eslint-disable-line no-unused-vars
   let error = { ...err };
 
   // Establecer el mensaje del error
   error.message = err.message;
-
   // Manejar errores específicos de MySQL
   switch (err.code) {
     case 'ER_BAD_FIELD_ERROR':
