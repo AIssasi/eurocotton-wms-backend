@@ -57,7 +57,11 @@ const initModels = () => {
     Movement.belongsTo(Product, {foreignKey: 'product_movement', as: 'product' });
     Product.hasMany(Movement, {foreignKey: 'product_movement' });
     
-    
+    Movement.belongsTo(Warehouse, {foreignKey: 'source_movement', as: 'warehouse' });
+    Warehouse.hasMany(Movement, {foreignKey: 'source_movement' });
+
+    Movement.belongsTo(Warehouse, {foreignKey: 'destination_movement', as: 'Warehouse' });
+    Warehouse.hasMany(Movement, {foreignKey: 'destination_movement' });
 
     Role.belongsToMany(Permission, {
       through: RolePerm,

@@ -1,6 +1,7 @@
 const { DataTypes, Model  } = require('sequelize');
 const sequelize = require('../config/database');
 const Product = require('./Product');
+const Warehouse = require('./Warehouse');
 
 class Movement extends Model {}
 
@@ -35,6 +36,10 @@ Movement.init({
         validate:{
             len:[1, 10]
         },
+        references:{
+            model: Warehouse,
+            key: 'id_warehouse'
+          }
     },
     destination_movement:{
         type: DataTypes.INTEGER,
@@ -42,7 +47,12 @@ Movement.init({
         validate:{
             len:[1, 10]
         },
+        references:{
+            model: Warehouse,
+            key: 'id_warehouse'
+          }
     },
+    
 
 },{
     sequelize,
