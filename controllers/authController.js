@@ -14,7 +14,7 @@ exports.register = async (req, res, next) => {
 
   try {
     const { username, password, email, role } = req.body;
-    const existingUser = await User.findOne({ where: { [Op.or]: [{ username_user : username }, { email_user : email }] } });
+    const existingUser = await User.findOne({ where: { [Op.or]: [{ username_user : username }, { email_user : email }] }, paranoid : false });
     if (existingUser) {
       return next(new ErrorResponse('Username or email already exists', 400));
     }
@@ -22,7 +22,6 @@ exports.register = async (req, res, next) => {
     const newUser = await User.create({ username_user : username, password_user: hashedPassword, email_user : email, role_user : role });
     successHandler(req, res, newUser.id_user, 'User registered successfully');
   } catch (err) {
-
     next(err);
   }
 };
