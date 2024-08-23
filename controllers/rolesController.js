@@ -89,4 +89,24 @@ exports.getAllRoles = async (req, res, next) => {
   }
 }
 
+exports.getRoleById = async (req, res, next ) => {
+  let  roleId  = req.params.id;
+  roleId = parseInt(roleId)
+  if(roleId){
+  
+    try{
+      const role = await Role.findByPk(roleId, { attributes: ['id_role', 'name_role', 'description_role'] });
+      if(!role){
+        return next(new ErrorResponse('Role not found', 404));
+      }
+      successHandler(req, res, role, 'Role retrieved successfully');
+    }catch(err){
+      next(err);
+    }
+
+  }else{
+    return next(new ErrorResponse('roleId are required fields', 401));
+  }
+}
+
 
