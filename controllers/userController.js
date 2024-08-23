@@ -19,7 +19,7 @@ exports.getProfile = (req, res, next) => {
 exports.logout = (req, res, next) => {
   try {
     // No action needed for JWT
-    res.status(200).json({ success: true, message: 'Logged out successfully' });
+    successHandler(req, res, next, 'Logged out successfully');
   } catch (err) {
     next(err);
   }
@@ -28,7 +28,7 @@ exports.logout = (req, res, next) => {
 exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await User.findAll({ attributes: ['id_user', 'username_user'] });
-    // return res.status(200).json({ success: true, data: users });
+    
     successHandler(req, res, users, 'Users retrieved successfully');
   } catch (err) {
     next(err);
@@ -44,7 +44,7 @@ exports.deleteUser = async (req, res, next) => {
       return next(new ErrorResponse('User not found', 404));
     }
     await user.destroy();
-    successHandler(req, res,userId, 'User deleted successfully');
+    successHandler(req, res,user.id_user, 'User deleted successfully');
   } catch (err) {
     next(err);
   }
