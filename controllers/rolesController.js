@@ -3,17 +3,17 @@
 const Role = require('../models/Role');
 
 exports.createRole = async (req, res, next) => {
-  const { name, description } = req.body;
+  const { name : name_role, description : description_role } = req.body;
 
   try {
     // Verificar si el rol ya existe
-    const existingRole = await Role.findOne({ where: { name } });
+    const existingRole = await Role.findOne({ where: { name_role } });
     if (existingRole) {
       return res.status(400).json({ success: false, message: 'El rol ya existe' });
     }
 
     // Crear el nuevo rol
-    const role = await Role.create({ name, description });
+    const role = await Role.create({ name_role, description_role });
 
     // Devolver el resultado de la inserción
     res.status(201).json({ success: true, message: 'Rol creado exitosamente', data: role });
