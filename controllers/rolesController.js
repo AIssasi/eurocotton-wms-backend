@@ -34,7 +34,8 @@ exports.updateRole = async (req, res, next) => {
 
     // Verificar si el rol existe
     if (!role) {
-      return res.status(404).json({ success: false, message: 'Role not found' });
+      
+      return next(new ErrorResponse('Role not found', 404));
     }
 
     // Actualizar los campos del rol
@@ -45,7 +46,7 @@ exports.updateRole = async (req, res, next) => {
     await role.save();
 
     // Responder con éxito
-    res.status(200).json({ success: true, message: 'Role updated successfully', data: role });
+    successHandler(req, res, role, 'Role updated successfully');
   } catch (error) {
     // Manejar errores
     next(error);
