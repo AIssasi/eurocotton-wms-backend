@@ -80,7 +80,7 @@ exports.deleteRole = async (req, res, next) => {
 exports.getAllRoles = async (req, res, next) => {
   try{
     const roles = await Role.findAll({ attributes:['id_role', 'name_role','description_role'] });
-    if(!roles){
+    if(!roles.length){
       return next(new ErrorResponse('Roles not found', 404));
     }
     successHandler(req, res, roles, 'Roles retrieved successfully');
