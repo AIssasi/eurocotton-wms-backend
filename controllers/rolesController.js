@@ -2,7 +2,7 @@
 
 const Role = require('../models/Role');
 const successHandler = require('../middleware/successHandler/successHandler.middleware');
-
+const ErrorResponse = require('../utils/errorResponse');
 exports.createRole = async (req, res, next) => {
   const { name : name_role, description : description_role } = req.body;
 
@@ -10,7 +10,7 @@ exports.createRole = async (req, res, next) => {
     // Verificar si el rol ya existe
     const existingRole = await Role.findOne({ where: { name_role } });
     if (existingRole) {
-      successHandler(req, res, next, 'El rol ya existe');
+      return next(new ErrorResponse('the role already exists', 400));
     }
 
     // Crear el nuevo rol
