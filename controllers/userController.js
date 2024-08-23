@@ -23,6 +23,7 @@ exports.logout = (req, res, next) => {
   } catch (err) {
     next(err);
   }
+  
 };
 
 exports.getAllUsers = async (req, res, next) => {
