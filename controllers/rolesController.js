@@ -10,14 +10,14 @@ exports.createRole = async (req, res, next) => {
     // Verificar si el rol ya existe
     const existingRole = await Role.findOne({ where: { name_role } });
     if (existingRole) {
-      return next(new ErrorResponse('the role already exists', 400));
+      return next(new ErrorResponse('The role already exists', 400));
     }
 
     // Crear el nuevo rol
     const role = await Role.create({ name_role, description_role });
 
     // Devolver el resultado de la inserción
-    successHandler(req, res, role, 'Rol creado exitosamente');
+    successHandler(req, res, role, 'Role created successfully');
   } catch (error) {
     next(error);
   }
