@@ -15,20 +15,6 @@ export default [
   }},
   pluginJs.configs.recommended,
   {
-    env: {
-      node: true,             // Definir entorno Node.js
-      es2021: true,           // Soporte para ES2021+
-      jest: true              // Soporte para pruebas con Jest (si aplicable)
-    },
-    extends: [
-      'eslint:recommended',   // Extender las reglas recomendadas de ESLint
-      'plugin:node/recommended',  // Reglas recomendadas para Node.js
-      'plugin:security/recommended' // Reglas recomendadas para seguridad
-    ],
-    parserOptions: {
-      ecmaVersion: 12,        // Usar las características más recientes de ECMAScript
-      sourceType: 'module'    // Permitir la importación/exportación de módulos
-    },
     rules: {
       'no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
       'no-console': 'warn',   // Advertencia en lugar de error por el uso de console.log
@@ -42,20 +28,5 @@ export default [
       'security/detect-object-injection': 'off', // Desactivar esta regla que puede ser molesta si se manejan objetos de manera segura
       'node/no-unsupported-features/es-syntax': 'off', // Permitir características de ES6+ como import/export
     },
-    plugins: [
-      'security',             // Plugin para detectar problemas de seguridad
-      'node',                 // Plugin con reglas específicas para Node.js
-    ],
-    overrides: [
-      {
-        files: ['**/*.test.js'], // Reglas especiales para archivos de pruebas
-        env: {
-          jest: true            // Soporte para Jest
-        },
-        rules: {
-          'no-unused-expressions': 'off' // Permitir expresiones chai-style en tests
-        }
-      }
-    ]
   }
 ];
