@@ -10,5 +10,4 @@ router.delete('/:id', protect, deleteStatus);
 router.get('/', protect, getAllStatus);
 router.get('/:id', protect,  getStatusById);
 
-
 module.exports = router;
