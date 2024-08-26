@@ -29,8 +29,8 @@ const rolesRoutes = require('./routes/rolesRoutes');
 const panicRoutes = require('./routes/panicRoutes');
 const productRoutes = require('./routes/productRoutes')
 const gatewayRoutes = require('./routes/gatewayRoutes')
-
-
+const categoryRoutes = require('./routes/categoryRoutes');
+const statusRoutes = require('./routes/statusRoutes');
 
 const app = express();
 app.use(morganMiddleware)
@@ -44,7 +44,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/roles', rolesRoutes);
 app.use('/api/panic', panicRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/status', statusRoutes );
 app.use('/apigateway', gatewayRoutes)
+
 
 app.use(errorHandler);
 
