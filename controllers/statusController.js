@@ -20,3 +20,23 @@ exports.createStatus = async (req, res, next) => {
     }
 }
 
+exports.updateStatus = async (req, res, next) => {
+    const statusId = req.params.id;
+    const { name, description } = req.body;
+
+    try {
+        const status = await State.findByPk(statusId);
+
+        if (!status) {
+            return next(new ErrorResponse('Status not found', 404))
+        }
+
+        status.name_status = name;
+        status.description_status = description;
+
+        await status.save();
+        successHandler(req, res, status, 'Status updated successfully');
+    } catch (err) {
+        next(err);
+    }
+}
