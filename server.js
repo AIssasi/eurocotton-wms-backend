@@ -1,3 +1,4 @@
+require('module-alias/register');
 const express = require('express');
 const morganMiddleware = require('./middleware/morgan/morgan.middleware')
 const dotenv = require('dotenv');
