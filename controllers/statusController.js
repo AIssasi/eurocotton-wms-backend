@@ -98,3 +98,28 @@ exports.createStatus = [
 }
   ];
 
+
+  
+  exports.getAllStatus = [
+
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return next(new ErrorResponse('Validation fields', errors.array(), 400));
+        }
+    
+        try {
+            const status = await State.findAll({
+                attributes: ['id_status', 'description_status']
+            });
+            if (!status.length) {
+                return next(new ErrorResponse('Validation fields', errors.array(), 401));
+            }
+            return successHandler(req, res, 'Status retreived successfully', status, 200);
+        } catch (err) {
+            return next(err);
+        }
+    }
+  ];
+
+ 
