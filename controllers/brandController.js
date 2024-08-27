@@ -30,7 +30,7 @@ exports.createBrand = [
         status_brand,
       });
 
-      return successHandler(req, res, 'Brand created successfully', brand.id_brand, 201);
+      return successHandler(req, res, 'Brand created successfully', brand, 201);
     } catch (err) {
       return next(err);
     }
@@ -40,6 +40,11 @@ exports.createBrand = [
 exports.updateBrand = [
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('description').trim().notEmpty().withMessage('Description is required'),
+  body('status')
+    .notEmpty()
+    .withMessage('Status is required')
+    .isInt({ min: 1 })
+    .withMessage('Status must be a positive integer'),
   param('id')
     .notEmpty()
     .withMessage('Id is required')
@@ -53,21 +58,20 @@ exports.updateBrand = [
     }
 
     try {
-      let idBrand = req.params.id;
-      idBrand = parseInt(idBrand);
-
-      const { name, description } = req.body;
-      const brand = await Brand.findByPk(idBrand);
+      const { id } = req.params;
+      const { name, description, status } = req.body;
+      const brand = await Brand.findByPk(id);
 
       if (!brand) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 404));
+        return next(new ErrorResponse('Brand not found', null, 404));
       }
 
       brand.name_brand = name;
       brand.description_brand = description;
+      brand.status_brand = status;
 
       await brand.save();
-      return successHandler(req, res, 'Brand updated successfully', brand.id_brand, 200);
+      return successHandler(req, res, 'Brand updated successfully', brand, 200);
     } catch (err) {
       return next(err);
     }
@@ -87,11 +91,11 @@ exports.deleteBrand = [
       return next(new ErrorResponse('Validation fields', errors.array(), 400));
     }
     try {
-      let brandId = req.params.id;
-      brandId = parseInt(brandId);
-      const brand = await Brand.findByPk(brandId);
-      if (!brandId) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 404));
+      const { id } = req.params;
+      const brand = await Brand.findByPk(id);
+
+      if (!brand) {
+        return next(new ErrorResponse('Brand not found', null, 404));
       }
       await brand.destroy();
       return successHandler(req, res, 'Brand deleted successfully', brand.id_brand, 200);
@@ -113,7 +117,7 @@ exports.getAllBrands = [
       });
 
       if (!brands.length) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 404));
+        return next(new ErrorResponse('Brands not found', null, 404));
       }
       return successHandler(req, res, 'Brands retrieved successfully', brands, 200);
     } catch (err) {
@@ -130,21 +134,20 @@ exports.getBrandById = [
     .withMessage('Id must be a positive integer'),
 
   async (req, res, next) => {
-    let brandId = req.params.id;
-    brandId = parseInt(brandId);
-
+    const { id } = req.params;
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return next(new ErrorResponse('Validation fields', errors.array(), 400));
     }
     try {
-      const brand = await Brand.findByPk(brandId, {
+      const brand = await Brand.findByPk(id, {
         attributes: ['id_brand', 'name_brand', 'description_brand', 'status_brand'],
       });
       if (!brand) {
-        return next(new ErrorResponse('Validations fields', errors.array(), 404));
+        return next(new ErrorResponse('Brand not found', null, 404));
       }
-      return successHandler(req, res, 'Brand retrieved successfully', brand.id_brand, 200);
+      return successHandler(req, res, 'Brand retrieved successfully', brand, 200);
     } catch (err) {
       return next(err);
     }
