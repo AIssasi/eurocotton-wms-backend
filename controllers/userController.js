@@ -19,9 +19,9 @@ exports.getProfile = (req, res, next) => {
 exports.logout = (req, res, next) => {
   try {
     // No action needed for JWT
-    successHandler(req, res, next, 'Logged out successfully');
+    return successHandler(req, res, 'Logged out successfully', next, 200);
   } catch (err) {
-    next(err);
+    return next(err);
   }
   
 };
@@ -30,9 +30,9 @@ exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await User.findAll({ attributes: ['id_user', 'username_user'] });
     
-    successHandler(req, res, users, 'Users retrieved successfully');
+    return successHandler(req, res, 'Users retrieved successfully', users, 200);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -45,9 +45,9 @@ exports.deleteUser = async (req, res, next) => {
       return next(new ErrorResponse('User not found', 404));
     }
     await user.destroy();
-    successHandler(req, res,user.id_user, 'User deleted successfully');
+    return successHandler(req, res, 'User deleted successfully', user.id_user, 200);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -59,9 +59,9 @@ exports.getUserById = async (req, res, next) => {
     if (!user) {
       return next(new ErrorResponse('User not found', 404));
     }
-    successHandler(req, res, user, 'User retrieved successfully');
+    return successHandler(req, res, 'User retrieved successfully', user, 200);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -79,9 +79,9 @@ exports.updateEncryptedPassword = async (req, res, next) => {
       }
       user.password_user = hashedPassword;
       await user.save();
-      successHandler(req, res, user.id_user, 'Encrypted password updated successfully');
+      return successHandler(req, res, 'Encrypted password updated successfully', user.id_user, 200);
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }else{
     return next(new ErrorResponse("newPassword are required fields",401))
@@ -94,17 +94,16 @@ exports.createUser = async (req, res, next) => {
   
   try{
       const { username, password, email, role } = req.body;
-      console.log('body',req.body)
       const exisitsUser = await User.findOne({ where: {[Op.or]: [{ username_user: username }, { email_user: email }] } });
         if(exisitsUser){
           return next(new ErrorResponse('Username or email already exists', 400));
         }
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = await User.create({ username_user: username, password_user: hashedPassword, email_user: email, role_user: role});
-      successHandler(req, res, newUser.id_user, 'User created successfully');
+      return successHandler(req, res, 'User created successfully', newUser.id_user, 201);
 
       } catch(err) {
-        next(err);
+        return next(err);
     }
 
 }
