@@ -27,9 +27,7 @@ winston.addColors(colors);
 // Define the format for log messages
 const logFormat = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
-  winston.format.printf(
-    (info) => `[${info.timestamp} ${info.level}]: ${info.message}`
-  )
+  winston.format.printf((info) => `[${info.timestamp} ${info.level}]: ${info.message}`)
 );
 
 // Create a logger instance with proper configuration

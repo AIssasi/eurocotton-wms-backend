@@ -15,13 +15,12 @@ exports.deleteFile = async (req, res, next) => {
     fs.unlinkSync(filePath);
 
     // Responder con éxito
-    res.status(200).json({ success: true, message: 'File deleted successfully' });
+    return res.status(200).json({ success: true, message: 'File deleted successfully' });
   } catch (error) {
     // Manejar errores
-    next(error);
+    return next(error);
   }
 };
-
 
 exports.deleteAllFiles = async (req, res, next) => {
   try {
@@ -55,12 +54,11 @@ exports.deleteAllFiles = async (req, res, next) => {
     deleteFolderRecursive(directoryPath);
 
     // Responder con éxito
-    res.status(200).json({ success: true, message: 'All files and subdirectories deleted successfully' });
+    return res
+      .status(200)
+      .json({ success: true, message: 'All files and subdirectories deleted successfully' });
   } catch (error) {
     // Manejar errores
-    next(error);
+    return next(error);
   }
 };
-
-
-

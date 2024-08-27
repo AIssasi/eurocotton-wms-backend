@@ -4,8 +4,6 @@ const ErrorResponse = require('../utils/errorResponse');
 const successHandler = require('../middleware/successHandler/successHandler.middleware');
 const { Op } = require('sequelize');
 
-
-
 exports.getProfile = (req, res, next) => {
   try {
     const { id } = req.user;
@@ -23,13 +21,12 @@ exports.logout = (req, res, next) => {
   } catch (err) {
     return next(err);
   }
-  
 };
 
 exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await User.findAll({ attributes: ['id_user', 'username_user'] });
-    
+
     return successHandler(req, res, 'Users retrieved successfully', users, 200);
   } catch (err) {
     return next(err);
@@ -55,7 +52,17 @@ exports.getUserById = async (req, res, next) => {
   const userId = req.params.id;
 
   try {
-    const user = await User.findByPk(userId, { attributes: ["id_user", 'username_user', 'email_user', 'role_user', 'isactive_user', 'created_at', 'updated_at']});
+    const user = await User.findByPk(userId, {
+      attributes: [
+        'id_user',
+        'username_user',
+        'email_user',
+        'role_user',
+        'isactive_user',
+        'created_at',
+        'updated_at',
+      ],
+    });
     if (!user) {
       return next(new ErrorResponse('User not found', null, 404));
     }
@@ -68,11 +75,11 @@ exports.getUserById = async (req, res, next) => {
 exports.updateEncryptedPassword = async (req, res, next) => {
   const userId = req.params.id;
   const { newPassword } = req.body;
-  if(newPassword){
+  if (newPassword) {
     try {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(newPassword, salt);
-  
+
       const user = await User.findByPk(userId);
       if (!user) {
         return next(new ErrorResponse('User not found', null, 404));
@@ -83,27 +90,29 @@ exports.updateEncryptedPassword = async (req, res, next) => {
     } catch (err) {
       return next(err);
     }
-  }else{
-    return next(new ErrorResponse("newPassword are required fields", null, 401))
+  } else {
+    return next(new ErrorResponse('newPassword are required fields', null, 401));
   }
-
-  
 };
 
 exports.createUser = async (req, res, next) => {
-  
-  try{
-      const { username, password, email, role } = req.body;
-      const exisitsUser = await User.findOne({ where: {[Op.or]: [{ username_user: username }, { email_user: email }] } });
-        if(exisitsUser){
-          return next(new ErrorResponse('Username or email already exists', null, 400));
-        }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = await User.create({ username_user: username, password_user: hashedPassword, email_user: email, role_user: role});
-      return successHandler(req, res, 'User created successfully', newUser.id_user, 201);
-
-      } catch(err) {
-        return next(err);
+  try {
+    const { username, password, email, role } = req.body;
+    const exisitsUser = await User.findOne({
+      where: { [Op.or]: [{ username_user: username }, { email_user: email }] },
+    });
+    if (exisitsUser) {
+      return next(new ErrorResponse('Username or email already exists', null, 400));
     }
-
-}
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
+      username_user: username,
+      password_user: hashedPassword,
+      email_user: email,
+      role_user: role,
+    });
+    return successHandler(req, res, 'User created successfully', newUser.id_user, 201);
+  } catch (err) {
+    return next(err);
+  }
+};

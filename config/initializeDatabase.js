@@ -36,7 +36,9 @@ async function initializeDatabase() {
     return { sequelize: sequelizeWithDB, models };
   } catch (error) {
     log.error(`🟥 Database initialization/synchronization - [ERROR] - [${error.message}]`);
+
     process.exit(1);
+    return error;
   }
 }
 
