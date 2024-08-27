@@ -20,17 +20,17 @@ const log = require('./middleware/logs/logger');
 
 const { DB_SYNC, DB_SYNC_FORCE } = process.env;
 
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-const rolesRoutes = require('./routes/rolesRoutes');
-const panicRoutes = require('./routes/panicRoutes');
-const productRoutes = require('./routes/productRoutes');
-const gatewayRoutes = require('./routes/gatewayRoutes');
-const categoryRoutes = require('./routes/categoryRoutes');
-const statusRoutes = require('./routes/statusRoutes');
+const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
+const rolesRoutes = require('./routes/roles.routes');
+const panicRoutes = require('./routes/panic.routes');
+const productRoutes = require('./routes/product.routes');
+const gatewayRoutes = require('./routes/gateway.routes');
+const categoryRoutes = require('./routes/category.routes');
+const statusRoutes = require('./routes/status.routes');
 const colorRoutes = require('./routes/color.routes');
-// const brandsRoutes = require('./routes/brandRoutes');
-// const compositionRoutes = require('./routes/compositionRoutes');
+const brandsRoutes = require('./routes/brand.routes');
+const compositionRoutes = require('./routes/composition.routes');
 
 const app = express();
 app.use(morganMiddleware);
@@ -45,9 +45,9 @@ app.use('/api/panic', panicRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/status', statusRoutes);
-// app.use('/api/brands', brandsRoutes );
+app.use('/api/brands', brandsRoutes);
 app.use('/apigateway', gatewayRoutes);
-// app.use('/api/compositions', compositionRoutes);
+app.use('/api/compositions', compositionRoutes);
 app.use('/api/colors', colorRoutes);
 
 app.use(errorHandler);

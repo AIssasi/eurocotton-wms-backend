@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
+const { protect } = require('@middleware/auth.middleware');
 const {
   createStatus,
   updateStatus,
   deleteStatus,
   getAllStatus,
   getStatusById,
-} = require('../controllers/statusController');
+} = require('@controllers/status.controller');
 
 router.post('/', protect, createStatus);
 router.put('/:id', protect, updateStatus);

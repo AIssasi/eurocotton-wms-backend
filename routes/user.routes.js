@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
+const { protect } = require('@middleware/auth.middleware');
 const {
   getProfile,
   logout,
@@ -9,7 +9,7 @@ const {
   getUserById,
   updateEncryptedPassword,
   createUser,
-} = require('../controllers/userController');
+} = require('@controllers/user.controller');
 
 router.get('/profile', protect, getProfile);
 router.post('/logout', protect, logout);

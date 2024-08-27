@@ -1,6 +1,6 @@
-const { Category } = require('../models');
-const successHandler = require('../middleware/successHandler/successHandler.middleware');
-const ErrorResponse = require('../utils/errorResponse');
+const { Category } = require('@models');
+const successHandler = require('@middleware/successHandler/successHandler.middleware');
+const ErrorResponse = require('@utils/errorResponse');
 const { Op } = require('sequelize');
 const { body, param, validationResult } = require('express-validator');
 

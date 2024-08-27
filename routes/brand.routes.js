@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
+const { protect } = require('@middleware/auth.middleware');
 const {
   createBrand,
   updateBrand,
   deleteBrand,
   getAllBrands,
   getBrandById,
-} = require('../controllers/brandController');
+} = require('@controllers/brand.controller');
 
 router.post('/', protect, createBrand);
 router.put('/:id', protect, updateBrand);

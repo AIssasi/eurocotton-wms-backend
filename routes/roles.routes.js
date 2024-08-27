@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
+const { protect } = require('@middleware/auth.middleware');
 const {
   createRole,
   updateRole,
   deleteRole,
   getAllRoles,
   getRoleById,
-} = require('../controllers/rolesController');
+} = require('@controllers/roles.controller');
 
 router.post('/', protect, createRole);
 router.put('/:id', protect, updateRole);
