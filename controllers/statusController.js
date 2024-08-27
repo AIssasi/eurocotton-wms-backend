@@ -25,7 +25,7 @@ exports.createStatus = [
         return next(new ErrorResponse('Status already exists', exisitsStatus.id_status, 400));
       }
       const newStatus = await State.create({ name_status, description_status });
-      return successHandler(req, res, newStatus.id_status, 'Status created successfully');
+      return successHandler(req, res, 'Status created successfully', newStatus, 201);
     } catch (err) {
       return next(err);
     }
@@ -48,21 +48,19 @@ exports.updateStatus = [
     }
 
     try {
-      let statusId = req.params.id;
-      statusId = parseInt(statusId);
+      const { id } = req.params;
       const { name, description } = req.body;
-
-      const status = await State.findByPk(statusId);
+      const status = await State.findByPk(id);
 
       if (!status) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 404));
+        return next(new ErrorResponse('Status not found', null, 404));
       }
 
       status.name_status = name;
       status.description_status = description;
 
       await status.save();
-      return successHandler(req, res, 'Status updated successfully', status.id_status, 201);
+      return successHandler(req, res, 'Status updated successfully', status, 201);
     } catch (err) {
       return next(err);
     }
@@ -83,11 +81,11 @@ exports.deleteStatus = [
     }
 
     try {
-      const statusId = req.params.id;
-      const status = await State.findByPk(statusId);
+      const { id } = req.params;
+      const status = await State.findByPk(id);
 
       if (!status) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 401));
+        return next(new ErrorResponse('Status not found', null, 401));
       }
 
       await status.destroy();
@@ -110,7 +108,7 @@ exports.getAllStatus = [
         attributes: ['id_status', 'description_status'],
       });
       if (!status.length) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 401));
+        return next(new ErrorResponse('Status not found', null, 401));
       }
       return successHandler(req, res, 'Status retreived successfully', status, 200);
     } catch (err) {
@@ -127,21 +125,20 @@ exports.getStatusById = [
     .withMessage('Id must be a positive integer'),
 
   async (req, res, next) => {
-    let statusId = req.params.id;
-    statusId = parseInt(statusId);
-
+    const { id } = req.params;
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return next(new ErrorResponse('Validation fields', errors.array(), 400));
     }
     try {
-      const status = await State.findByPk(statusId, {
+      const status = await State.findByPk(id, {
         attributes: ['id_status', 'name_status', 'description_status', 'created_at', 'updated_at'],
       });
       if (!status) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 404));
+        return next(new ErrorResponse('Status not found', null, 404));
       }
-      return successHandler(req, res, 'Status retrieved successfully', status.id_status, 200);
+      return successHandler(req, res, 'Status retrieved successfully', status, 200);
     } catch (err) {
       return next(err);
     }
