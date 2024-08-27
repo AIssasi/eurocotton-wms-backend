@@ -1,6 +1,6 @@
 const logger = require('../logs/logger');
 
-const successHandler = (req, res, data, message = 'Request successful') => {
+const successHandler = (req, res, message = 'Request successful', data = null, statusCode) => {
 // console.log(req.headers)
     logger.info(`🟩 ${JSON.stringify({
         success: true,
@@ -8,7 +8,7 @@ const successHandler = (req, res, data, message = 'Request successful') => {
         data
       })}`)
     // Configuración de la respuesta exitosa
-    res.status(200).json({
+    res.status(statusCode || 200).json({
       success: true,
       message,
       data
