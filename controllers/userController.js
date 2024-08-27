@@ -42,7 +42,7 @@ exports.deleteUser = async (req, res, next) => {
   try {
     const user = await User.findByPk(userId);
     if (!user) {
-      return next(new ErrorResponse('User not found', 404));
+      return next(new ErrorResponse('User not found', null, 404));
     }
     await user.destroy();
     return successHandler(req, res, 'User deleted successfully', user.id_user, 200);
@@ -57,7 +57,7 @@ exports.getUserById = async (req, res, next) => {
   try {
     const user = await User.findByPk(userId, { attributes: ["id_user", 'username_user', 'email_user', 'role_user', 'isactive_user', 'created_at', 'updated_at']});
     if (!user) {
-      return next(new ErrorResponse('User not found', 404));
+      return next(new ErrorResponse('User not found', null, 404));
     }
     return successHandler(req, res, 'User retrieved successfully', user, 200);
   } catch (err) {
@@ -75,7 +75,7 @@ exports.updateEncryptedPassword = async (req, res, next) => {
   
       const user = await User.findByPk(userId);
       if (!user) {
-        return next(new ErrorResponse('User not found', 404));
+        return next(new ErrorResponse('User not found', null, 404));
       }
       user.password_user = hashedPassword;
       await user.save();
@@ -84,7 +84,7 @@ exports.updateEncryptedPassword = async (req, res, next) => {
       return next(err);
     }
   }else{
-    return next(new ErrorResponse("newPassword are required fields",401))
+    return next(new ErrorResponse("newPassword are required fields", null, 401))
   }
 
   
@@ -96,7 +96,7 @@ exports.createUser = async (req, res, next) => {
       const { username, password, email, role } = req.body;
       const exisitsUser = await User.findOne({ where: {[Op.or]: [{ username_user: username }, { email_user: email }] } });
         if(exisitsUser){
-          return next(new ErrorResponse('Username or email already exists', 400));
+          return next(new ErrorResponse('Username or email already exists', null, 400));
         }
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = await User.create({ username_user: username, password_user: hashedPassword, email_user: email, role_user: role});
