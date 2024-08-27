@@ -1,67 +1,39 @@
-const {
-    State
-} = require('../models');
+const { State } = require('../models');
 const ErrorResponse = require('../utils/errorResponse');
 const successHandler = require('../middleware/successHandler/successHandler.middleware');
-const {
-    Op
-} = require('sequelize');
+const { Op } = require('sequelize');
+const { body, validationResult } = require('express-validator');
 
-exports.createStatus = async (req, res, next) => {
-    try {
-        const {
-            name,
-            description
-        } = req.body;
+
+exports.createStatus = [
+    // Validación y sanitización
+    body('name').trim().notEmpty().withMessage('Name is required'),
+    body('description').trim().notEmpty().withMessage('Description is required'),
+
+  
+    async (req, res, next) => {
+      // Validación de los datos
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(new ErrorResponse('Validation fields', errors.array(), 400));
+      }
+  
+      try {
+        const { name : name_status, description: description_status } = req.body;
         const exisitsStatus = await State.findOne({
-            where: {
-                [Op.or]: [{
-                    name_status: name
-                }, {
-                    description_status: description
-                }]
-            }
+            where: { [Op.or]: [{name_status}, {description_status}] }
         });
         if (exisitsStatus) {
-            return next(new ErrorResponse('Status already exists', 400));
+            return next(new ErrorResponse('Status already exists', exisitsStatus.id_status, 400));
         }
-        const newStatus = await State.create({
-            name_status: name,
-            description_status: description
-        });
-        successHandler(req, res, newStatus, 'Status created successfully');
+        const newStatus = await State.create({ name_status, description_status });
+        return successHandler(req, res, newStatus.id_status, 'Status created successfully');
 
     } catch (err) {
-        next(err);
+         return next(err);
     }
-}
-
-exports.updateStatus = async (req, res, next) => {
-    let statusId = req.params.id;
-    statusId = parseInt(statusId);
-
-    const {
-        name,
-        description
-    } = req.body;
-
-    if (statusId) {
-        try {
-            const status = await State.findByPk(statusId);
-
-            if (!status) {
-                return next(new ErrorResponse('Status not found', 404))
-            }
-
-            status.name_status = name;
-            status.description_status = description;
-
-            await status.save();
-            successHandler(req, res, status, 'Status updated successfully');
-        } catch (err) {
-            next(err);
-        }
-    } else {
-        return next(new ErrorResponse('statusId are required fields', 401));
+    
     }
-}
+  ];
+
+
