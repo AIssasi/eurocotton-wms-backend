@@ -54,9 +54,9 @@ app.use(errorHandler);
 
 // Sincronizar los modelos con la base de datos
 (async () => {
-  if(DB_SYNC == 'true' && DB_SYNC_FORCE == 'false'){
+  if(DB_SYNC === 'true' && DB_SYNC_FORCE === 'false'){
     await sequelize.sync();
-  }else if(DB_SYNC == 'true' && DB_SYNC_FORCE == 'true'){
+  }else if(DB_SYNC === 'true' && DB_SYNC_FORCE === 'true'){
     await sequelize.sync({force: true});
   }else{
     await sequelize.authenticate();
