@@ -15,7 +15,7 @@ exports.protect = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
-    next();
+    return next();
   } catch {
     return next(new ErrorResponse('Not authorized to access this route', 401));
   }
