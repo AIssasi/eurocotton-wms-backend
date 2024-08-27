@@ -1,107 +1,139 @@
-// controllers/rolesController.js
-
 const Role = require('../models/Role');
 const successHandler = require('../middleware/successHandler/successHandler.middleware');
 const ErrorResponse = require('../utils/errorResponse');
-exports.createRole = async (req, res, next) => {
-  const { name: name_role, description: description_role } = req.body;
+const { body, param, validationResult } = require('express-validator');
 
-  try {
-    // Verificar si el rol ya existe
-    const existingRole = await Role.findOne({ where: { name_role } });
-    if (existingRole) {
-      return next(new ErrorResponse('The role already exists', 400));
+exports.createRole = [
+  body('name').trim().notEmpty().withMessage('Name is required'),
+  body('description').trim().notEmpty().withMessage('Description is required'),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
     }
 
-    // Crear el nuevo rol
-    const role = await Role.create({ name_role, description_role });
-
-    // Devolver el resultado de la inserción
-    return successHandler(req, res, role, 'Role created successfully');
-  } catch (error) {
-    return next(error);
-  }
-};
-
-exports.updateRole = async (req, res, next) => {
-  const roleId = req.params.id;
-  const { name, description } = req.body;
-
-  try {
-    // Buscar el rol por su ID
-    const role = await Role.findByPk(roleId);
-
-    // Verificar si el rol existe
-    if (!role) {
-      return next(new ErrorResponse('Role not found', 404));
-    }
-
-    // Actualizar los campos del rol
-    role.name = name;
-    role.description = description;
-
-    // Guardar los cambios en la base de datos
-    await role.save();
-
-    // Responder con éxito
-    return successHandler(req, res, role, 'Role updated successfully');
-  } catch (error) {
-    // Manejar errores
-    return next(error);
-  }
-};
-
-exports.deleteRole = async (req, res, next) => {
-  const roleId = req.params.id;
-
-  try {
-    // Buscar el rol por su ID
-    const role = await Role.findByPk(roleId);
-
-    // Verificar si el rol existe
-    if (!role) {
-      return res.status(404).json({ success: false, message: 'Role not found' });
-    }
-
-    // Eliminar el rol de la base de datos
-    await role.destroy();
-
-    // Responder con éxito
-    return res.status(200).json({ success: true, message: 'Role deleted successfully' });
-  } catch (error) {
-    // Manejar errores
-    return next(error);
-  }
-};
-
-exports.getAllRoles = async (req, res, next) => {
-  try {
-    const roles = await Role.findAll({ attributes: ['id_role', 'name_role', 'description_role'] });
-    if (!roles.length) {
-      return next(new ErrorResponse('Roles not found', 404));
-    }
-    return successHandler(req, res, roles, 'Roles retrieved successfully');
-  } catch (err) {
-    return next(err);
-  }
-};
-
-exports.getRoleById = async (req, res, next) => {
-  let roleId = req.params.id;
-  roleId = parseInt(roleId);
-  if (roleId) {
     try {
-      const role = await Role.findByPk(roleId, {
+      const { name: name_role, description: description_role } = req.body;
+
+      const existingRole = await Role.findOne({ where: { name_role } });
+      if (existingRole) {
+        return next(new ErrorResponse('The role already exists', existingRole, 400));
+      }
+
+      const role = await Role.create({ name_role, description_role });
+
+      return successHandler(req, res, 'Role created successfully', role, 201);
+    } catch (error) {
+      return next(error);
+    }
+  },
+];
+
+exports.updateRole = [
+  body('name').trim().notEmpty().withMessage('Name is required'),
+  body('description').trim().notEmpty().withMessage('Description is required'),
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isInt({ min: 1 })
+    .withMessage('Id must be a positive integer'),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
+
+    try {
+      const { id } = req.params;
+      const { name, description } = req.body;
+      const role = await Role.findByPk(id);
+
+      if (!role) {
+        return next(new ErrorResponse('Role not found', null, 404));
+      }
+
+      role.name_role = name;
+      role.description_role = description;
+
+      await role.save();
+      return successHandler(req, res, 'Role updated successfully', role, 200);
+    } catch (error) {
+      return next(error);
+    }
+  },
+];
+
+exports.deleteRole = [
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isInt({ min: 1 })
+    .withMessage('Id must be a positive integer'),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
+    try {
+      const { id } = req.params;
+      const role = await Role.findByPk(id);
+
+      if (!role) {
+        return next(new ErrorResponse('Role not found', null, 404));
+      }
+
+      await role.destroy();
+      return successHandler(req, res, 'Role deleted successfully', role.id_role, 200);
+    } catch (error) {
+      return next(error);
+    }
+  },
+];
+
+exports.getAllRoles = [
+  async (req, res, next) => {
+    try {
+      const roles = await Role.findAll({
         attributes: ['id_role', 'name_role', 'description_role'],
       });
-      if (!role) {
-        return next(new ErrorResponse('Role not found', 404));
+      if (!roles.length) {
+        return next(new ErrorResponse('Roles not found', null, 404));
       }
-      return successHandler(req, res, role, 'Role retrieved successfully');
+      return successHandler(req, res, 'Roles retrieved successfully', roles, 200);
     } catch (err) {
       return next(err);
     }
-  } else {
-    return next(new ErrorResponse('roleId are required fields', 401));
-  }
-};
+  },
+];
+
+exports.getRoleById = [
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isInt({ min: 1 })
+    .withMessage('Id must be a positive integer'),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
+
+    try {
+      const { id } = req.params;
+      const role = await Role.findByPk(id, {
+        attributes: ['id_role', 'name_role', 'description_role'],
+      });
+
+      if (!role) {
+        return next(new ErrorResponse('Role not found', null, 404));
+      }
+      return successHandler(req, res, 'Role retrieved successfully', role, 200);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
