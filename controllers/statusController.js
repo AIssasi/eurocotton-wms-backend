@@ -73,3 +73,28 @@ exports.createStatus = [
 }
   ];
 
+  exports.deleteStatus = [
+   param('id').notEmpty().withMessage('Id is required').isInt({min:1}).withMessage('Id must be a positive integer'),
+
+   async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
+
+    try {
+        const statusId = req.params.id;
+        const status = await State.findByPk(statusId);
+
+        if (!status) {
+            return next(new ErrorResponse('Validation fields', errors.array(), 401));
+        }
+
+        await status.destroy();
+        return successHandler(req, res,  'Status deleted successfully', status.id_status, 200);
+    } catch (err) {
+        return next(err);
+    }
+}
+  ];
+
