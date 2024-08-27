@@ -122,4 +122,26 @@ exports.createStatus = [
     }
   ];
 
- 
+  exports.getStatusById = [
+    param('id').notEmpty().withMessage('Id is required').isInt({min:1}).withMessage('Id must be a positive integer'),
+
+    async (req, res, next) => {
+        let statusId = req.params.id;
+        statusId = parseInt(statusId);
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return next(new ErrorResponse('Validation fields', errors.array(), 400));
+        }
+        try {
+            const status = await State.findByPk(statusId, { attributes: ['id_status', 'name_status', 'description_status', 'created_at', 'updated_at'] });
+            if (!status) {
+                return next(new ErrorResponse('Validation fields', errors.array(), 404));
+            }
+            return successHandler(req, res, 'Status retrieved successfully',status.id_status, 200 );
+        } catch (err) {
+            return next(err);
+        }
+
+    }
+  ];
