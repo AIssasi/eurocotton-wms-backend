@@ -6,90 +6,90 @@ const Composition = require('./Composition');
 const Color = require('./Color');
 const State = require('./State');
 
-
 class Product extends Model {}
 
-module.exports = {}
-  Product.init({
+module.exports = {};
+Product.init(
+  {
     id_product: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
     },
-    name_product:{
+    name_product: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len:[1, 200]
-      }
+        len: [1, 200],
+      },
     },
     description_product: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 200] // Validación: longitud mínima y máxima de la descripción del producto
-      }
+        len: [1, 200], // Validación: longitud mínima y máxima de la descripción del producto
+      },
     },
     sku_product: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 200] // Validación: longitud mínima y máxima del código del producto
-      }
+        len: [1, 200], // Validación: longitud mínima y máxima del código del producto
+      },
     },
     brand_product: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references:{
+      references: {
         model: Brand,
-        key: 'id_brand'
-      }
+        key: 'id_brand',
+      },
     },
     category_product: {
       type: DataTypes.INTEGER,
       allowNull: false,
-       references:{
-         model: Category,
-         key: 'id_category'
-       }
+      references: {
+        model: Category,
+        key: 'id_category',
+      },
     },
     composition_product: {
       type: DataTypes.INTEGER,
       allowNull: false,
-        references:{
-         model: Composition,
-         key: 'id_composition'
-      }
+      references: {
+        model: Composition,
+        key: 'id_composition',
+      },
     },
     color_product: {
       type: DataTypes.INTEGER,
       allowNull: false,
-       references:{
-         model: Color,
-         key: 'id_color'
-       }
+      references: {
+        model: Color,
+        key: 'id_color',
+      },
     },
     weight_product: {
       type: DataTypes.DOUBLE,
-      allowNull: false
+      allowNull: false,
     },
     status_product: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references:{
+      references: {
         model: State,
-        key: 'id_status'
-      }
-      
+        key: 'id_status',
+      },
     },
-    
-  }, {
+  },
+  {
     sequelize, // Instancia de Sequelize
     modelName: 'Product', // Nombre del modelo
     tableName: 'products', // Nombre de la tabla
     timestamps: true, // Activa createdAt y updatedAt
-    underscored: true // Utiliza nombres de columnas en formato snake_case
-  });
+    underscored: true, // Utiliza nombres de columnas en formato snake_case
+  }
+);
 
- module.exports = Product;
+module.exports = Product;

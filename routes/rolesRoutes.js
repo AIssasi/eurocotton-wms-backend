@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/authMiddleware');
-const { createRole, updateRole, deleteRole, getAllRoles } = require('../controllers/rolesController');
+const {
+  createRole,
+  updateRole,
+  deleteRole,
+  getAllRoles,
+} = require('../controllers/rolesController');
 
 router.post('/', protect, createRole);
 // Ruta protegida para actualizar un rol

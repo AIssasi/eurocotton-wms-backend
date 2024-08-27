@@ -1,13 +1,11 @@
 const jwt = require('jsonwebtoken');
 const ErrorResponse = require('../utils/errorResponse');
 
-const {
-  JWT_SECRET
-} = process.env;
+const { JWT_SECRET } = process.env;
 
 exports.protect = (req, res, next) => {
   const authHeader = req.header('Authorization');
-  const token = authHeader && authHeader.split(' ')[1]
+  const token = authHeader && authHeader.split(' ')[1];
   if (!token) {
     return next(new ErrorResponse('Not authorized to access this route', 401));
   }

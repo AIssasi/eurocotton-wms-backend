@@ -20,107 +20,102 @@ const itemOrder = require('./itemOrder');
 const Image = require('./Image');
 
 const initModels = () => {
-    // Definir relaciones
-    User.belongsTo(Role, { foreignKey: 'role_user', as: 'role' });
-    Role.hasMany(User, { foreignKey: 'role_user' });
+  // Definir relaciones
+  User.belongsTo(Role, { foreignKey: 'role_user', as: 'role' });
+  Role.hasMany(User, { foreignKey: 'role_user' });
 
-    Product.belongsTo(Brand, {foreignKey: 'brand_product', as: 'brand' });
-    Brand.hasMany(Product, {foreignKey: 'brand_product' });
-      
-    Product.belongsTo(Category, {foreignKey: 'category_product', as: 'category' });
-    Category.hasMany(Product, {foreignKey: 'category_product' });
+  Product.belongsTo(Brand, { foreignKey: 'brand_product', as: 'brand' });
+  Brand.hasMany(Product, { foreignKey: 'brand_product' });
 
-    Product.belongsTo(Composition, {foreignKey: 'composition_product', as: 'composition' });
-    Composition.hasMany(Product, {foreignKey: 'composition_product' });
+  Product.belongsTo(Category, { foreignKey: 'category_product', as: 'category' });
+  Category.hasMany(Product, { foreignKey: 'category_product' });
 
-    Product.belongsTo(Color, {foreignKey: 'color_product', as: 'color' });
-    Color.hasMany(Product, {foreignKey: 'color_product' });
+  Product.belongsTo(Composition, { foreignKey: 'composition_product', as: 'composition' });
+  Composition.hasMany(Product, { foreignKey: 'composition_product' });
 
-    Brand.belongsTo(State, {foreignKey: 'status_brand', as: 'state' });
-    State.hasMany(Brand, {foreignKey: 'status_brand' });
+  Product.belongsTo(Color, { foreignKey: 'color_product', as: 'color' });
+  Color.hasMany(Product, { foreignKey: 'color_product' });
 
-    Category.belongsTo(State, {foreignKey: 'status_category', as: 'state' });
-    State.hasMany(Category, {foreignKey: 'status_category' });
+  Brand.belongsTo(State, { foreignKey: 'status_brand', as: 'state' });
+  State.hasMany(Brand, { foreignKey: 'status_brand' });
 
-    Warehouse.belongsTo(State, {foreignKey: 'status_warehouse', as: 'state' });
-    State.hasMany(Warehouse, {foreignKey: 'status_warehouse' });
+  Category.belongsTo(State, { foreignKey: 'status_category', as: 'state' });
+  State.hasMany(Category, { foreignKey: 'status_category' });
 
-    Provider.belongsTo(State, {foreignKey: 'status_provider', as: 'state' });
-    State.hasMany(Provider, {foreignKey: 'status_provider' });
+  Warehouse.belongsTo(State, { foreignKey: 'status_warehouse', as: 'state' });
+  State.hasMany(Warehouse, { foreignKey: 'status_warehouse' });
 
-    Order.belongsTo(Warehouse, {foreignKey: 'source_order', as: 'warehouse' });
-    Warehouse.hasMany(Order, {foreignKey: 'source_order' });
-   
-    Order.belongsTo(orderType, {foreignKey: 'type_order', as: 'ordertype' });
-    orderType.hasMany(Order, {foreignKey: 'type_order' });
-  
-    Order.belongsTo(Warehouse, {foreignKey: 'destination_order', as: 'Warehouse' });
-    Warehouse.hasMany(Order, {foreignKey: 'destination_order' });
-   
-    Movement.belongsTo(Product, {foreignKey: 'product_movement', as: 'product' });
-    Product.hasMany(Movement, {foreignKey: 'product_movement' });
-    
-    Movement.belongsTo(Warehouse, {foreignKey: 'source_movement', as: 'warehouse' });
-    Warehouse.hasMany(Movement, {foreignKey: 'source_movement' });
+  Provider.belongsTo(State, { foreignKey: 'status_provider', as: 'state' });
+  State.hasMany(Provider, { foreignKey: 'status_provider' });
 
-    Movement.belongsTo(Warehouse, {foreignKey: 'destination_movement', as: 'Warehouse' });
-    Warehouse.hasMany(Movement, {foreignKey: 'destination_movement' });
+  Order.belongsTo(Warehouse, { foreignKey: 'source_order', as: 'warehouse' });
+  Warehouse.hasMany(Order, { foreignKey: 'source_order' });
 
-    Inventory.belongsTo(Product, {foreignKey: 'product_inventory', as: 'product' });
-    Product.hasMany(Inventory, {foreignKey: 'product_inventory' });
+  Order.belongsTo(orderType, { foreignKey: 'type_order', as: 'ordertype' });
+  orderType.hasMany(Order, { foreignKey: 'type_order' });
 
-    Inventory.belongsTo(Warehouse, {foreignKey: 'warehouse_inventory', as: 'warehouse' });
-    Warehouse.hasMany(Inventory, {foreignKey: 'warehouse_inventory' });
+  Order.belongsTo(Warehouse, { foreignKey: 'destination_order', as: 'Warehouse' });
+  Warehouse.hasMany(Order, { foreignKey: 'destination_order' });
 
-    itemOrder.belongsTo(Order, {foreignKey: 'order_itemorder', as: 'order' });
-    Order.hasMany(itemOrder, {foreignKey: 'order_itemorder' });
+  Movement.belongsTo(Product, { foreignKey: 'product_movement', as: 'product' });
+  Product.hasMany(Movement, { foreignKey: 'product_movement' });
 
-    itemOrder.belongsTo(Product, {foreignKey: 'product_itemorder', as: 'product' });
-    Product.hasMany(itemOrder, {foreignKey: 'product_itemorder' });
+  Movement.belongsTo(Warehouse, { foreignKey: 'source_movement', as: 'warehouse' });
+  Warehouse.hasMany(Movement, { foreignKey: 'source_movement' });
 
-    
-    Image.belongsTo(Product, {foreignKey: 'product_image', as: 'Product' });
-    Product.hasMany(Image, {foreignKey: 'product_image' });
-    
+  Movement.belongsTo(Warehouse, { foreignKey: 'destination_movement', as: 'Warehouse' });
+  Warehouse.hasMany(Movement, { foreignKey: 'destination_movement' });
 
-    Role.belongsToMany(Permission, {
-      through: RolePerm,
-      foreignKey: 'role_roleperm',
-      otherKey: 'permission_roleperm',
-      as: 'permissions'
-    });
-    
-    Permission.belongsToMany(Role, {
-      through: RolePerm,
-      foreignKey: 'permission_roleperm',
-      otherKey: 'role_roleperm',
-      as: 'roles'
-    });
-  };
+  Inventory.belongsTo(Product, { foreignKey: 'product_inventory', as: 'product' });
+  Product.hasMany(Inventory, { foreignKey: 'product_inventory' });
 
-  
-  // Inicializar modelos y relaciones
-    initModels();
+  Inventory.belongsTo(Warehouse, { foreignKey: 'warehouse_inventory', as: 'warehouse' });
+  Warehouse.hasMany(Inventory, { foreignKey: 'warehouse_inventory' });
 
-  module.exports = {
-    sequelize,
-    User,
-    Role,
-    Permission,
-    RolePerm,
-    Product,
-    Brand,
-    Category,
-    Composition,
-    Color,
-    State,
-    Warehouse,
-    Provider,
-    Order,
-    Movement,
-    Inventory,
-    itemOrder,
-    Image,
-    
-   
-  };
+  itemOrder.belongsTo(Order, { foreignKey: 'order_itemorder', as: 'order' });
+  Order.hasMany(itemOrder, { foreignKey: 'order_itemorder' });
+
+  itemOrder.belongsTo(Product, { foreignKey: 'product_itemorder', as: 'product' });
+  Product.hasMany(itemOrder, { foreignKey: 'product_itemorder' });
+
+  Image.belongsTo(Product, { foreignKey: 'product_image', as: 'Product' });
+  Product.hasMany(Image, { foreignKey: 'product_image' });
+
+  Role.belongsToMany(Permission, {
+    through: RolePerm,
+    foreignKey: 'role_roleperm',
+    otherKey: 'permission_roleperm',
+    as: 'permissions',
+  });
+
+  Permission.belongsToMany(Role, {
+    through: RolePerm,
+    foreignKey: 'permission_roleperm',
+    otherKey: 'role_roleperm',
+    as: 'roles',
+  });
+};
+
+// Inicializar modelos y relaciones
+initModels();
+
+module.exports = {
+  sequelize,
+  User,
+  Role,
+  Permission,
+  RolePerm,
+  Product,
+  Brand,
+  Category,
+  Composition,
+  Color,
+  State,
+  Warehouse,
+  Provider,
+  Order,
+  Movement,
+  Inventory,
+  itemOrder,
+  Image,
+};
