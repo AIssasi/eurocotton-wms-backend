@@ -9,8 +9,8 @@ const {
   getStatusById,
 } = require('../controllers/statusController');
 
-router.post('/', createStatus);
-router.put('/:id', updateStatus);
+router.post('/', protect, createStatus);
+router.put('/:id', protect, updateStatus);
 router.delete('/:id', protect, deleteStatus);
 router.get('/', protect, getAllStatus);
 router.get('/:id', protect, getStatusById);
