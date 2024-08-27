@@ -2,14 +2,14 @@ const { State } = require('../models');
 const ErrorResponse = require('../utils/errorResponse');
 const successHandler = require('../middleware/successHandler/successHandler.middleware');
 const { Op } = require('sequelize');
-const { body, validationResult } = require('express-validator');
+const { body,param, validationResult } = require('express-validator');
 
 
 exports.createStatus = [
     // Validación y sanitización
     body('name').trim().notEmpty().withMessage('Name is required'),
     body('description').trim().notEmpty().withMessage('Description is required'),
-
+   
   
     async (req, res, next) => {
       // Validación de los datos
@@ -36,4 +36,40 @@ exports.createStatus = [
     }
   ];
 
+
+  exports.updateStatus = [
+
+    body('name').trim().notEmpty().withMessage('Name is required'),
+    body('description').trim().notEmpty().withMessage('Description is required'),
+    param('id').notEmpty().withMessage('Id is required').isInt({min:1}).withMessage('Id must be a positive integer'),
+
+    async(req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return next(new ErrorResponse('Validation fields', errors.array(), 400));
+        }
+    
+    try {
+        
+    let statusId = req.params.id;
+    statusId = parseInt(statusId);
+        const { name, description } = req.body;
+
+        const status = await State.findByPk(statusId);
+
+        if (!status) {
+            return next(new ErrorResponse('Validation fields', errors.array(), 404))
+        }
+
+        status.name_status = name;
+        status.description_status = description;
+
+        await status.save();
+        return successHandler(req, res,'Status updated successfully', status.id_status, 201 );
+    } catch (err) {
+       return next(err);
+    }
+
+}
+  ];
 
