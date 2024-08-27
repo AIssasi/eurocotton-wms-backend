@@ -124,3 +124,33 @@ exports.getAllCategories = [
     }
   },
 ];
+
+exports.getCategoryById = [
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isInt({
+      min: 1,
+    })
+    .withMessage('Id must be a positive integer'),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
+
+    try {
+      const { id } = req.params;
+      const category = await Category.findByPk(id, {
+        attributes: ['id_category', 'name_category', 'description_category', 'status_category'],
+      });
+      if (!category) {
+        return next(new ErrorResponse('Category not found', null, 404));
+      }
+      return successHandler(req, res, 'Category retrieved successfully', category, 200);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
