@@ -1,6 +1,6 @@
-const Role = require('../models/Role');
-const successHandler = require('../middleware/successHandler/successHandler.middleware');
-const ErrorResponse = require('../utils/errorResponse');
+const Role = require('@models/Role');
+const successHandler = require('@middleware/successHandler/successHandler.middleware');
+const ErrorResponse = require('@utils/errorResponse');
 const { body, param, validationResult } = require('express-validator');
 
 exports.createRole = [

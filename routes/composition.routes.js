@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
+const { protect } = require('@middleware/auth.middleware');
 const {
   createCompositions,
   updateCompositions,
   deleteCompositions,
   getAllCompositions,
   getCompositionsById,
-} = require('../controllers/compositionsController');
+} = require('@controllers/composition.controller');
 
 router.post('/', protect, createCompositions);
 router.put('/:id', protect, updateCompositions);

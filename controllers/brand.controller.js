@@ -1,6 +1,6 @@
-const { Brand } = require('../models');
-const ErrorResponse = require('../utils/errorResponse');
-const successHandler = require('../middleware/successHandler/successHandler.middleware');
+const { Brand } = require('@models');
+const ErrorResponse = require('@utils/errorResponse');
+const successHandler = require('@middleware/successHandler/successHandler.middleware');
 const { body, param, validationResult } = require('express-validator');
 
 exports.createBrand = [
