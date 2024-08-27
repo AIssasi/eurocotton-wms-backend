@@ -25,12 +25,18 @@ Este repositorio contiene una base sólida para una API RESTful que implementa a
 Sigue estos pasos para configurar el proyecto localmente:
 
 1. **Clona el repositorio:**
+
    ```bash
    git clone https://github.com/tu-usuario/nombre-del-repositorio.git
 
+   ```
+
 2. **Instala las dependencias:**
+
    ```bash
    npm install
+
+   ```
 
 3. **Configura las variables de entorno:**
 
@@ -44,9 +50,12 @@ Sigue estos pasos para configurar el proyecto localmente:
     DB_NAME=###
     JWT_SECRET=###
 
+   ```
+
 4. **Inicia el servidor:**
    ```bash
    npm run dev-windows
+   ```
 
 ## Uso
 
@@ -59,5 +68,3 @@ Las contribuciones son bienvenidas. Si tienes alguna sugerencia o encuentras un 
 ## Licencia
 
 Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
-
-
