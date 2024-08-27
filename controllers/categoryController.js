@@ -7,6 +7,7 @@ const { body, param, validationResult } = require('express-validator');
 exports.createCategory = [
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('description').trim().notEmpty().withMessage('Description is required'),
+
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -19,9 +20,7 @@ exports.createCategory = [
         description: description_category,
         status: status_category,
       } = req.body;
-      const exisitsCategory = await Category.findOne({
-        where: { [Op.or]: [{ name_category }] },
-      });
+      const exisitsCategory = await Category.findOne({ where: { [Op.or]: [{ name_category }] } });
 
       if (exisitsCategory) {
         return next(new ErrorResponse('Category already exists', exisitsCategory.id_category, 400));
@@ -33,7 +32,7 @@ exports.createCategory = [
         status_category,
       });
 
-      return successHandler(req, res, category.id_category, 'Category created successfully', 201);
+      return successHandler(req, res, 'Category created successfully', category, 201);
     } catch (err) {
       return next(err);
     }
@@ -43,6 +42,11 @@ exports.createCategory = [
 exports.updateCategory = [
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('description').trim().notEmpty().withMessage('Description is required'),
+  body('status')
+    .notEmpty()
+    .withMessage('Status is required')
+    .isInt({ min: 1 })
+    .withMessage('Status must be a positive integer'),
   param('id')
     .notEmpty()
     .withMessage('Id is required')
@@ -56,26 +60,20 @@ exports.updateCategory = [
     }
 
     try {
-      let idCategory = req.params.id;
-      idCategory = parseInt(idCategory);
-      const { name, description } = req.body;
-      const category = await Category.findByPk(idCategory);
+      const { id } = req.params;
+      const { name, description, status } = req.body;
+      const category = await Category.findByPk(id);
 
       if (!category) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 404));
+        return next(new ErrorResponse('Category not found', null, 404));
       }
 
       category.name_category = name;
       category.description_category = description;
+      category.status_category = status;
 
       await category.save();
-      return successHandler(
-        req,
-        res,
-        'Category updated successfully',
-        category.category_status,
-        201
-      );
+      return successHandler(req, res, 'Category updated successfully', category, 200);
     } catch (err) {
       return next(err);
     }
@@ -96,13 +94,11 @@ exports.deleteCategory = [
     }
 
     try {
-      let categoryId = req.params.id;
-      categoryId = parseInt(categoryId);
-
-      const category = await Category.findByPk(categoryId);
+      const { id } = req.params;
+      const category = await Category.findByPk(id);
 
       if (!category) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 404));
+        return next(new ErrorResponse('Category not found', null, 404));
       }
 
       await category.destroy();
@@ -115,48 +111,14 @@ exports.deleteCategory = [
 
 exports.getAllCategories = [
   async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new ErrorResponse('Validation fields', errors.array(), 400));
-    }
     try {
-      const category = await Category.findAll({
+      const categories = await Category.findAll({
         attributes: ['id_category', 'name_category', 'description_category', 'status_category'],
       });
-      if (!category.length) {
-        return next(new ErrorResponse('Categories not found', 404));
+      if (!categories.length) {
+        return next(new ErrorResponse('Categories not found', null, 404));
       }
-      return successHandler(req, res, 'Categories retrieved successfully', category, 200);
-    } catch (err) {
-      return next(err);
-    }
-  },
-];
-
-exports.getCategoryById = [
-  param('id')
-    .notEmpty()
-    .withMessage('Id is required')
-    .isInt({ min: 1 })
-    .withMessage('Id must be a positive integer'),
-
-  async (req, res, next) => {
-    let categoryId = req.params.id;
-    categoryId = parseInt(categoryId);
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new ErrorResponse('Validation fields', errors.array(), 400));
-    }
-
-    try {
-      const category = await Category.findByPk(categoryId, {
-        attributes: ['id_category', 'name_category', 'description_category', 'status_category'],
-      });
-      if (!category) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 404));
-      }
-      return successHandler(req, res, 'Category retrieved successfully', category.id_category, 200);
+      return successHandler(req, res, 'Categories retrieved successfully', categories, 200);
     } catch (err) {
       return next(err);
     }
