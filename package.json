@@ -47,8 +47,12 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint"
-  },
+  "**/*.js": [
+    "eslint",
+    "prettier --write"
+  ]
+},
+
   "_moduleAliases": {
     "@root": ".",
     "@middleware": "middleware",
