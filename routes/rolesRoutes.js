@@ -6,14 +6,13 @@ const {
   updateRole,
   deleteRole,
   getAllRoles,
+  getRoleById,
 } = require('../controllers/rolesController');
 
 router.post('/', protect, createRole);
-// Ruta protegida para actualizar un rol
 router.put('/:id', protect, updateRole);
-// Ruta protegida para eliminar un rol
 router.delete('/:id', protect, deleteRole);
-
 router.get('/', protect, getAllRoles);
+router.get('/:id', protect, getRoleById);
 
 module.exports = router;

@@ -34,10 +34,10 @@ exports.getAllUsers = async (req, res, next) => {
 };
 
 exports.deleteUser = async (req, res, next) => {
-  const userId = req.params.id;
+  const { id } = req.params;
 
   try {
-    const user = await User.findByPk(userId);
+    const user = await User.findByPk(id);
     if (!user) {
       return next(new ErrorResponse('User not found', null, 404));
     }
@@ -49,10 +49,10 @@ exports.deleteUser = async (req, res, next) => {
 };
 
 exports.getUserById = async (req, res, next) => {
-  const userId = req.params.id;
+  const { id } = req.params;
 
   try {
-    const user = await User.findByPk(userId, {
+    const user = await User.findByPk(id, {
       attributes: [
         'id_user',
         'username_user',
@@ -73,14 +73,14 @@ exports.getUserById = async (req, res, next) => {
 };
 
 exports.updateEncryptedPassword = async (req, res, next) => {
-  const userId = req.params.id;
+  const { id } = req.params;
   const { newPassword } = req.body;
   if (newPassword) {
     try {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-      const user = await User.findByPk(userId);
+      const user = await User.findByPk(id);
       if (!user) {
         return next(new ErrorResponse('User not found', null, 404));
       }
