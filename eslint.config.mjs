@@ -42,6 +42,7 @@ export default [
       // Reglas de Prettier
       'prettier/prettier': 'error', // Aplica las reglas de Prettier y marca como errores las violaciones
       'no-multiple-empty-lines': ['error', { max: 1 }],
+      'linebreak-style': ['error', 'unix'],
     },
   },
 ];
