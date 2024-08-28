@@ -1,7 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
-const sequelize = require('../config/database');
-const Product = require('./Product');
-const Warehouse = require('./Warehouse');
+const sequelize = require('@config/database');
+const Product = require('@models/Product');
+const Warehouse = require('@models/Warehouse');
 
 class Movement extends Model {}
 

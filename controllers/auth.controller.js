@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const { User, RolePerm } = require('@models');
 const ErrorResponse = require('@utils/errorResponse');
-const successHandler = require('@middleware/successHandler/successHandler.middleware');
+const successHandler = require('@middleware/success/successHandler.middleware');
 const { body, validationResult } = require('express-validator');
 
 const { JWT_SECRET } = process.env;

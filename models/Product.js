@@ -1,10 +1,10 @@
 const { DataTypes, Model } = require('sequelize');
-const sequelize = require('../config/database');
-const Brand = require('./Brand');
-const Category = require('./Category');
-const Composition = require('./Composition');
-const Color = require('./Color');
-const State = require('./State');
+const sequelize = require('@config/database');
+const Brand = require('@models/Brand');
+const Category = require('@models/Category');
+const Composition = require('@models/Composition');
+const Color = require('@models/Color');
+const State = require('@models/State');
 
 class Product extends Model {}
 

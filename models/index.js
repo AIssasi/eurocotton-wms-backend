@@ -1,23 +1,23 @@
-const sequelize = require('../config/database'); // Importar la instancia de Sequelize
+const sequelize = require('@config/database'); // Importar la instancia de Sequelize
 
-const User = require('./User');
-const Role = require('./Role');
-const Permission = require('./Permission');
-const RolePerm = require('./rolePerm');
-const Product = require('./Product');
-const Brand = require('./Brand');
-const Category = require('./Category');
-const Composition = require('./Composition');
-const Color = require('./Color');
-const State = require('./State');
-const Warehouse = require('./Warehouse');
-const Provider = require('./Provider');
-const Order = require('./Order');
-const orderType = require('./orderType');
-const Movement = require('./Movement');
-const Inventory = require('./Inventory');
-const itemOrder = require('./itemOrder');
-const Image = require('./Image');
+const User = require('@models/User');
+const Role = require('@models/Role');
+const Permission = require('@models/Permission');
+const RolePerm = require('@models/rolePerm');
+const Product = require('@models/Product');
+const Brand = require('@models/Brand');
+const Category = require('@models/Category');
+const Composition = require('@models/Composition');
+const Color = require('@models/Color');
+const State = require('@models/State');
+const Warehouse = require('@models/Warehouse');
+const Provider = require('@models/Provider');
+const Order = require('@models/Order');
+const orderType = require('@models/orderType');
+const Movement = require('@models/Movement');
+const Inventory = require('@models/Inventory');
+const itemOrder = require('@models/itemOrder');
+const Image = require('@models/Image');
 
 const initModels = () => {
   // Definir relaciones

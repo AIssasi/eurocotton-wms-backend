@@ -1,6 +1,6 @@
 const { Product } = require('@models'); // Importa el modelo Products de Sequelize
 const ErrorResponse = require('@utils/errorResponse');
-const successHandler = require('@middleware/successHandler/successHandler.middleware');
+const successHandler = require('@middleware/success/successHandler.middleware');
 const { body, validationResult } = require('express-validator');
 
 exports.createProduct = [

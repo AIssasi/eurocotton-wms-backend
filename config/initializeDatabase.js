@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
-const log = require('../middleware/logs/logger');
-const defineModels = require('../models'); // Asegúrate de que esta ruta sea correcta
+const log = require('@middleware/logs/logger');
+const defineModels = require('@models'); // Asegúrate de que esta ruta sea correcta
 
 const DB_NAME = process.env.DB_NAME;
 const DB_USER = process.env.DB_USER;

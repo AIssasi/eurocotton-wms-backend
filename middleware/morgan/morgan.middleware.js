@@ -1,5 +1,5 @@
 const morgan = require('morgan');
-const logger = require('../logs/logger');
+const logger = require('@middleware/logs/logger.middleware');
 
 const stream = {
   // Use the http severity

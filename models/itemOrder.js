@@ -1,7 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
-const sequelize = require('../config/database');
-const Order = require('./Order');
-const Product = require('./Product');
+const sequelize = require('@config/database');
+const Order = require('@models/Order');
+const Product = require('@models/Product');
 
 class ItemOrder extends Model {}
 

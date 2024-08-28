@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
-const { User } = require('../models'); // Importa el modelo User de Sequelize
-const ErrorResponse = require('../utils/errorResponse');
-const successHandler = require('../middleware/successHandler/successHandler.middleware');
+const { User } = require('@models'); // Importa el modelo User de Sequelize
+const ErrorResponse = require('@utils/errorResponse');
+const successHandler = require('@middleware/success/successHandler.middleware');
 const { Op } = require('sequelize');
 const { body, param, validationResult } = require('express-validator');
 

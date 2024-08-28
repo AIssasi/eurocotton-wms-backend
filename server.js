@@ -15,8 +15,8 @@ if (process.env.NODE_ENV === 'production') {
 const sequelize = require('./config/database');
 const helmet = require('helmet');
 const cors = require('cors');
-const errorHandler = require('./middleware/errorHandler');
-const log = require('./middleware/logs/logger');
+const errorHandler = require('./middleware/error/errorHandler.middleware');
+const log = require('./middleware/logs/logger.middleware');
 
 const { DB_SYNC, DB_SYNC_FORCE } = process.env;
 
