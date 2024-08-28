@@ -1,6 +1,6 @@
 const { State } = require('@models');
 const ErrorResponse = require('@utils/errorResponse');
-const successHandler = require('@middleware/successHandler/successHandler.middleware');
+const successHandler = require('@middleware/success/successHandler.middleware');
 const { Op } = require('sequelize');
 const { body, param, validationResult } = require('express-validator');
 

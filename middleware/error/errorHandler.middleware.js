@@ -1,5 +1,5 @@
-const ErrorResponse = require('../utils/errorResponse');
-const log = require('./logs/logger');
+const ErrorResponse = require('@utils/errorResponse');
+const log = require('@middleware/logs/logger.middleware');
 
 const errorHandler = (err, req, res, _next) => {
   let error = { ...err };

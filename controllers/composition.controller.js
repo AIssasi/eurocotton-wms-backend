@@ -1,5 +1,5 @@
 const { Composition } = require('@models');
-const successHandler = require('@middleware/successHandler/successHandler.middleware');
+const successHandler = require('@middleware/success/successHandler.middleware');
 const ErrorResponse = require('@utils/errorResponse');
 const { body, param, validationResult } = require('express-validator');
 

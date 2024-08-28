@@ -1,4 +1,4 @@
-const logger = require('../logs/logger');
+const logger = require('@middleware/logs/logger.middleware');
 
 const successHandler = (req, res, message = 'Request successful', data = null, statusCode) => {
   // console.log(req.headers)

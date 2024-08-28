@@ -1,7 +1,7 @@
 // config/database.js
 
 const { Sequelize } = require('sequelize');
-const log = require('../middleware/logs/logger');
+const log = require('@middleware/logs/logger.middleware');
 
 const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 

@@ -1,6 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
-const sequelize = require('../config/database');
-const State = require('./State');
+const sequelize = require('@config/database');
+const State = require('@models/State');
 
 class Brand extends Model {}
 

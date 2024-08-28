@@ -1,7 +1,7 @@
 // models/Product.js
 
 const { DataTypes, Model } = require('sequelize');
-const sequelize = require('../config/database');
+const sequelize = require('@config/database');
 
 // Define el modelo Product
 class RolePerm extends Model {}
