@@ -1,6 +1,6 @@
 require('module-alias/register');
 const express = require('express');
-const morganMiddleware = require('./middleware/morgan/morgan.middleware');
+const morganMiddleware = require('@middleware/morgan/morgan.middleware');
 const dotenv = require('dotenv');
 
 if (process.env.NODE_ENV === 'production') {
@@ -12,25 +12,25 @@ if (process.env.NODE_ENV === 'production') {
     path: '.env.development',
   });
 }
-const sequelize = require('./config/database');
+const sequelize = require('@config/database');
 const helmet = require('helmet');
 const cors = require('cors');
-const errorHandler = require('./middleware/error/errorHandler.middleware');
-const log = require('./middleware/logs/logger.middleware');
+const errorHandler = require('@middleware/error/errorHandler.middleware');
+const log = require('@middleware/logs/logger.middleware');
 
 const { DB_SYNC, DB_SYNC_FORCE } = process.env;
 
-const authRoutes = require('./routes/auth.routes');
-const userRoutes = require('./routes/user.routes');
-const rolesRoutes = require('./routes/roles.routes');
-const panicRoutes = require('./routes/panic.routes');
-const productRoutes = require('./routes/product.routes');
-const gatewayRoutes = require('./routes/gateway.routes');
-const categoryRoutes = require('./routes/category.routes');
-const statusRoutes = require('./routes/status.routes');
-const colorRoutes = require('./routes/color.routes');
-const brandsRoutes = require('./routes/brand.routes');
-const compositionRoutes = require('./routes/composition.routes');
+const authRoutes = require('@routes/auth.routes');
+const userRoutes = require('@routes/user.routes');
+const rolesRoutes = require('@routes/roles.routes');
+const panicRoutes = require('@routes/panic.routes');
+const productRoutes = require('@routes/product.routes');
+const gatewayRoutes = require('@routes/gateway.routes');
+const categoryRoutes = require('@routes/category.routes');
+const statusRoutes = require('@routes/status.routes');
+const colorRoutes = require('@routes/color.routes');
+const brandsRoutes = require('@routes/brand.routes');
+const compositionRoutes = require('@routes/composition.routes');
 
 const app = express();
 app.use(morganMiddleware);
