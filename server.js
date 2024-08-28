@@ -67,6 +67,5 @@ app.use(errorHandler);
   app.listen(PORT, async () => {
     log.warn(`🟨 ENVIRONMENT: ${process.env.NODE_ENV} 🟨`);
     log.debug(`🟦 Server running on port: ${PORT}`);
-    console.log('');
   });
 })();
