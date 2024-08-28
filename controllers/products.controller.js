@@ -1,7 +1,7 @@
 const { Product } = require('@models'); // Importa el modelo Products de Sequelize
 const ErrorResponse = require('@utils/errorResponse');
 const successHandler = require('@middleware/success/successHandler.middleware');
-const { body, validationResult } = require('express-validator');
+const { body, param, validationResult } = require('express-validator');
 
 exports.createProduct = [
   // Validación y sanitización
@@ -62,31 +62,147 @@ exports.createProduct = [
   },
 ];
 
-exports.getAllProducts = async (req, res, next) => {
-  try {
-    const productData = await Product.findAll({
-      attributes: [
-        'id_product',
-        'name_product',
-        'description_product',
-        'sku_product',
-        'brand_product',
-        'category_product',
-        'composition_product',
-        'color_product',
-        'weight_product',
-        'status_product',
-        'created_at',
-        'updated_at',
-      ],
-      // where: { status: 'active' },
-      // order: [['createdAt', 'DESC']],
-    });
-    if (!productData.length) {
-      return next(new ErrorResponse('No products found', 404));
+exports.updateProduct = [
+  body('name').trim().notEmpty().withMessage('Name is required'),
+  body('description').trim().notEmpty().withMessage('Description is required'),
+  body('sku')
+    .trim()
+    .notEmpty()
+    .withMessage('SKU is required')
+    .isAlphanumeric()
+    .withMessage('SKU must be alphanumeric'),
+  body('brand').isInt({ min: 1 }).withMessage('Brand must be a positive integer'),
+  body('category').isInt({ min: 1 }).withMessage('Category must be a positive integer'),
+  body('composition').isInt({ min: 1 }).withMessage('Composition must be a positive integer'),
+  body('color').isInt({ min: 1 }).withMessage('Color must be a positive integer'),
+  body('weight').isFloat({ gt: 0 }).withMessage('Weight must be a positive number'),
+  body('status').isInt({ min: 0 }).withMessage('Status must be a non-negative integer'),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
     }
-    return successHandler(req, res, productData, 'All products retrieved successfully.');
-  } catch (err) {
-    return next(err);
-  }
-};
+
+    try {
+      const { id } = req.params;
+      const { name, description, sku, brand, category, composition, color, weight, status } =
+        req.body;
+      const product = await Product.findByPk(id);
+
+      if (!product) {
+        return next(new ErrorResponse('Product not found', null, 404));
+      }
+
+      product.name_product = name;
+      product.description_product = description;
+      product.sku_product = sku;
+      product.brand_product = brand;
+      product.category_product = category;
+      product.composition_product = composition;
+      product.color_product = color;
+      product.weight_product = weight;
+      product.status_product = status;
+
+      await product.save();
+      return successHandler(req, res, 'Product update successfully', product, 201);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
+exports.deleteProduct = [
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isInt({ min: 1 })
+    .withMessage('Id must be a positive integer'),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
+
+    try {
+      const { id } = req.params;
+      const product = await Product.findByPk(id);
+
+      if (!product) {
+        return next(new ErrorResponse('Product not found', null, 404));
+      }
+
+      await product.destroy();
+      return successHandler(req, res, 'Product deleted successfully', product.id_product, 200);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
+exports.getAllProducts = [
+  async (req, res, next) => {
+    try {
+      const products = await Product.findAll({
+        attributes: [
+          'id_product',
+          'name_product',
+          'description_product',
+          'sku_product',
+          'brand_product',
+          'category_product',
+          'composition_product',
+          'color_product',
+          'weight_product',
+          'status_product',
+        ],
+      });
+      if (!products.length) {
+        return next(new ErrorResponse('Products not found', null, 404));
+      }
+      return successHandler(req, res, 'Products retrieved succesfully', products, 200);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
+exports.getProductById = [
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isInt({
+      min: 1,
+    })
+    .withMessage('Id must be a positive integer'),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
+    try {
+      const { id } = req.params;
+      const product = await Product.findByPk(id, {
+        attributes: [
+          'id_product',
+          'name_product',
+          'description_product',
+          'sku_product',
+          'brand_product',
+          'category_product',
+          'composition_product',
+          'color_product',
+          'weight_product',
+          'status_product',
+        ],
+      });
+      if (!product) {
+        return next(new ErrorResponse('Product not found', null, 404));
+      }
+      return successHandler(req, res, 'Product retrieved successfully', product, 200);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
