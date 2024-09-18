@@ -1,5 +1,6 @@
 require('module-alias/register');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const morganMiddleware = require('@middleware/morgan/morgan.middleware');
 const dotenv = require('dotenv');
 
@@ -35,9 +36,16 @@ const compositionRoutes = require('@routes/composition.routes');
 const app = express();
 app.use(morganMiddleware);
 app.use(express.json());
+app.use(cookieParser());
 app.use(helmet());
-app.use(cors());
-
+// Configuración CORS
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // URL de tu frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true, // Permite el envío de credenciales como cookies
+  })
+);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', rolesRoutes);
