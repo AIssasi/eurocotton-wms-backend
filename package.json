@@ -18,6 +18,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -37,11 +38,11 @@
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.9.0",
     "husky": "^9.1.4",
-    "lint-staged": "^15.2.9",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1"
+    "lint-staged": "^15.2.9"
   },
   "husky": {
     "hooks": {
@@ -50,12 +51,11 @@
     }
   },
   "lint-staged": {
-  "**/*.js": [
-    "eslint --fix",
-    "prettier --write"
-  ]
-},
-
+    "**/*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
   "_moduleAliases": {
     "@root": ".",
     "@middleware": "middleware",
