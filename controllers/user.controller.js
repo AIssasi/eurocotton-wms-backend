@@ -135,6 +135,48 @@ exports.updateEncryptedPassword = [
     }
   },
 ];
+exports.updateUser = [
+  body('username').trim().notEmpty().withMessage('Username is required'),
+  body('email').trim().notEmpty().withMessage('Email is required'),
+  body('role').notEmpty().withMessage('Role is required').isInt({ min: 1 }),
+  body('isActive')
+    .notEmpty()
+    .withMessage('isActive is required')
+    .isBoolean()
+    .withMessage('isActive must be a boolean value'),
+
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isInt({
+      min: 1,
+    })
+    .withMessage('Id must be a positive integer'),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
+    try {
+      const { id } = req.params;
+      const { username, email, role, isActive } = req.body;
+
+      const user = await User.findByPk(id);
+      if (!user) {
+        return next(new ErrorResponse('User not found', null, 404));
+      }
+      user.username_user = username;
+      user.email_user = email;
+      user.role_user = role;
+      user.isactive_user = isActive;
+
+      await user.save();
+      return successHandler(req, res, 'User updated successfully', user.id_user, 200);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
 
 exports.createUser = [
   body('username').trim().notEmpty().withMessage('Username is required'),
