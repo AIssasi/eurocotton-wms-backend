@@ -19,10 +19,6 @@ Image.init(
     product_image: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: true,
-      validate: {
-        len: [1, 10],
-      },
       references: {
         model: Product,
         key: 'id_product',
