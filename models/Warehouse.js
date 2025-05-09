@@ -19,6 +19,13 @@ Warehouse.init(
         len: [1, 200],
       },
     },
+    code_warehouse: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 200],
+      },
+    },
     description_warehouse: {
       type: DataTypes.STRING,
       allowNull: false,

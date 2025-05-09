@@ -87,6 +87,7 @@ exports.getWarehouseById = [
         attributes: [
           'id_warehouse',
           'name_warehouse',
+          'code_warehouse',
           'description_warehouse',
           'country_warehouse',
           'postcode_warehouse',
@@ -200,6 +201,7 @@ exports.updateWarehouse = [
 
 exports.createWarehouse = [
   body('name').trim().notEmpty().withMessage('Name is required'),
+  body('code').trim().notEmpty().withMessage('Code is required'),
   body('description').trim().notEmpty().withMessage('Description is required'),
   body('country').trim().notEmpty().withMessage('Country is required'),
   body('postcode')
@@ -243,6 +245,7 @@ exports.createWarehouse = [
     try {
       const {
         name,
+        code,
         description,
         country,
         postcode,
@@ -261,6 +264,7 @@ exports.createWarehouse = [
       }
       const newWarehouse = await Warehouse.create({
         name_warehouse: name,
+        code_warehouse: code,
         description_warehouse: description,
         country_warehouse: country,
         postcode_warehouse: postcode,
