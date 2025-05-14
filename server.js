@@ -23,6 +23,7 @@ const { DB_SYNC, DB_SYNC_FORCE } = process.env;
 
 const authRoutes = require('@routes/auth.routes');
 const userRoutes = require('@routes/user.routes');
+const quickRoutes = require('@routes/quick.routes');
 const rolesRoutes = require('@routes/roles.routes');
 const panicRoutes = require('@routes/panic.routes');
 const productRoutes = require('@routes/product.routes');
@@ -34,6 +35,7 @@ const brandsRoutes = require('@routes/brand.routes');
 const compositionRoutes = require('@routes/composition.routes');
 const warehousesRoutes = require('@routes/warehouses.routes');
 const permissionsRoutes = require('@routes/permissions.routes');
+const factorRoutes = require('@routes/factor.routes');
 
 const app = express();
 app.use(morganMiddleware);
@@ -50,6 +52,8 @@ app.use(
 );
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/quick', quickRoutes);
+app.use('/api/factor', factorRoutes);
 app.use('/api/roles', rolesRoutes);
 app.use('/api/panic', panicRoutes);
 app.use('/api/products', productRoutes);

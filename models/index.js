@@ -18,6 +18,8 @@ const Movement = require('@models/Movement');
 const Inventory = require('@models/Inventory');
 const itemOrder = require('@models/itemOrder');
 const Image = require('@models/Image');
+const QuickEntry = require('@models/Quickentry');
+const PackingFactor = require('@models/Packingfactor');
 
 const initModels = () => {
   // Definir relaciones
@@ -81,6 +83,10 @@ const initModels = () => {
   Image.belongsTo(Product, { foreignKey: 'product_image', as: 'Product' });
   Product.hasMany(Image, { foreignKey: 'product_image' });
 
+  PackingFactor.hasMany(QuickEntry, { foreignKey: 'sku_quick', as: 'quickentry' });
+
+  QuickEntry.belongsTo(PackingFactor, { foreignKey: 'sku_quick', as: 'quickentry' });
+
   Role.belongsToMany(Permission, {
     through: RolePerm,
     foreignKey: 'role_roleperm',
@@ -118,4 +124,6 @@ module.exports = {
   Inventory,
   itemOrder,
   Image,
+  QuickEntry,
+  PackingFactor,
 };
