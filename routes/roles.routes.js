@@ -1,13 +1,13 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { protect } = require('@middleware/auth/auth.middleware');
-const {
+import { protect } from '#middleware/auth/auth.middleware';
+import {
   createRole,
   updateRole,
   deleteRole,
   getAllRoles,
   getRoleById,
-} = require('@controllers/roles.controller');
+} from '#controllers/roles.controller';
 
 router.post('/', protect, createRole);
 router.put('/:id', protect, updateRole);
@@ -15,4 +15,4 @@ router.delete('/:id', protect, deleteRole);
 router.get('/', protect, getAllRoles);
 router.get('/:id', protect, getRoleById);
 
-module.exports = router;
+export default router;

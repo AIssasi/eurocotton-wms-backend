@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { protect } = require('@middleware/auth/auth.middleware');
-const {
+import { protect } from '#middleware/auth/auth.middleware';
+import {
   logout,
   getAllUsers,
   deleteUser,
@@ -9,7 +9,7 @@ const {
   updateEncryptedPassword,
   updateUser,
   createUser,
-} = require('@controllers/user.controller');
+} from '#controllers/user.controller';
 
 router.post('/logout', protect, logout);
 router.get('/', protect, getAllUsers);
@@ -19,4 +19,4 @@ router.put('/:id/password', protect, updateEncryptedPassword);
 router.put('/:id', protect, updateUser);
 router.post('/', protect, createUser);
 
-module.exports = router;
+export default router;

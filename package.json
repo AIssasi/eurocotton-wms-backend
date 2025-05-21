@@ -58,13 +58,16 @@
       "prettier --write"
     ]
   },
-  "_moduleAliases": {
-    "@root": ".",
-    "@middleware": "middleware",
-    "@controllers": "controllers",
-    "@models": "models",
-    "@routes": "routes",
-    "@utils": "utils",
-    "@config": "config"
+  "type": "module",
+  "imports": {
+    "#root/*": ".",
+    "#middleware/*": "./middleware/*.js",
+    "#controllers/*": "./controllers/*.js",
+    "#models/*": "./models/*.js",
+    "#routes/*": "./routes/*.js",
+    "#utils/*": "./utils/*.js",
+    "#config/*": "./config/*.js",
+    "#mappers/*": "./mappers/*.js",
+    "#services/*": "./services/*.js"
   }
 }

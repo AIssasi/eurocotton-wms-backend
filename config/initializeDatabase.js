@@ -1,6 +1,6 @@
-const { Sequelize } = require('sequelize');
-const log = require('@middleware/logs/logger');
-const defineModels = require('@models'); // Asegúrate de que esta ruta sea correcta
+import { Sequelize } from 'sequelize';
+import log from '#middleware/logs/logger';
+import defineModels from '#models'; // Asegúrate de que esta ruta sea correcta
 
 const DB_NAME = process.env.DB_NAME;
 const DB_USER = process.env.DB_USER;
@@ -11,6 +11,7 @@ const sequelize = new Sequelize('', DB_USER, DB_PASSWORD, {
   host: DB_HOST,
   dialect: 'mysql',
   logging: (msg) => log.debug(`🟦 ${msg}`),
+  benchmark: true,
 });
 
 async function initializeDatabase() {
@@ -42,4 +43,4 @@ async function initializeDatabase() {
   }
 }
 
-module.exports = initializeDatabase;
+export default initializeDatabase;

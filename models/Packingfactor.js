@@ -1,5 +1,5 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('@config/database');
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '#config/database';
 
 class PackingFactor extends Model {}
 
@@ -32,4 +32,4 @@ PackingFactor.init(
   }
 );
 
-module.exports = PackingFactor;
+export default PackingFactor;

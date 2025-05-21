@@ -1,4 +1,4 @@
-const logger = require('@middleware/logs/logger.middleware');
+import logger from '#middleware/logs/logger.middleware';
 
 const successHandler = (req, res, message = 'Request successful', data = null, statusCode) => {
   // console.log(req.headers)
@@ -17,4 +17,4 @@ const successHandler = (req, res, message = 'Request successful', data = null, s
   });
 };
 
-module.exports = successHandler;
+export default successHandler;

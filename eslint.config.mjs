@@ -5,7 +5,7 @@ import configPrettier from 'eslint-config-prettier';
 
 export default [
   // Configuración de archivos y opciones de lenguaje
-  { files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
+  { files: ['**/*.js'], languageOptions: { sourceType: 'module' } },
   {
     languageOptions: {
       globals: {

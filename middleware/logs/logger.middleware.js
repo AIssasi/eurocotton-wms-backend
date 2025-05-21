@@ -1,7 +1,7 @@
-const winston = require('winston');
-require('winston-daily-rotate-file');
-const path = require('path');
-const fs = require('fs');
+import winston from 'winston';
+import 'winston-daily-rotate-file';
+import path from 'path';
+import fs from 'fs';
 
 // Define severity levels for logging
 const levels = {
@@ -72,4 +72,4 @@ const createLogger = () => {
 
 // Create and export the logger instance
 const logger = createLogger();
-module.exports = logger;
+export default logger;

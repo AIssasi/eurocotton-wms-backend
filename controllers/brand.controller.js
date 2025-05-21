@@ -1,155 +1,165 @@
-const { Brand } = require('@models');
-const ErrorResponse = require('@utils/errorResponse');
-const successHandler = require('@middleware/success/successHandler.middleware');
-const { body, param, validationResult } = require('express-validator');
+import { Brand } from '#models/index';
+import ErrorResponse from '#utils/errorResponse';
+import successHandler from '#middleware/success/successHandler.middleware';
+import { body, param, validationResult } from 'express-validator';
 
-exports.createBrand = [
-  body('name').trim().notEmpty().withMessage('Name is required'),
-  body('description').trim().notEmpty().withMessage('Description is required'),
+export function createBrand() {
+  return [
+    body('name').trim().notEmpty().withMessage('Name is required'),
+    body('description').trim().notEmpty().withMessage('Description is required'),
 
-  async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new ErrorResponse('Validation fields', errors.array(), 400));
-    }
-
-    const { name: name_brand, description: description_brand, status: status_brand } = req.body;
-
-    try {
-      const exisitsBrand = await Brand.findOne({
-        where: { name_brand },
-      });
-
-      if (exisitsBrand) {
-        return next(new ErrorResponse('Brand already exists', exisitsBrand.id_brand, 400));
+    async (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(new ErrorResponse('Validation fields', errors.array(), 400));
       }
 
-      const brand = await Brand.create({
-        name_brand,
-        description_brand,
-        status_brand,
-      });
+      const { name: name_brand, description: description_brand, status: status_brand } = req.body;
 
-      return successHandler(req, res, 'Brand created successfully', brand, 201);
-    } catch (err) {
-      return next(err);
-    }
-  },
-];
+      try {
+        const exisitsBrand = await Brand.findOne({
+          where: { name_brand },
+        });
 
-exports.updateBrand = [
-  body('name').trim().notEmpty().withMessage('Name is required'),
-  body('description').trim().notEmpty().withMessage('Description is required'),
-  body('status')
-    .notEmpty()
-    .withMessage('Status is required')
-    .isInt({ min: 1 })
-    .withMessage('Status must be a positive integer'),
-  param('id')
-    .notEmpty()
-    .withMessage('Id is required')
-    .isInt({ min: 1 })
-    .withMessage('Id must be a positive integer'),
+        if (exisitsBrand) {
+          return next(new ErrorResponse('Brand already exists', exisitsBrand.id_brand, 400));
+        }
 
-  async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new ErrorResponse('Validation fields', errors.array(), 400));
-    }
+        const brand = await Brand.create({
+          name_brand,
+          description_brand,
+          status_brand,
+        });
 
-    try {
+        return successHandler(req, res, 'Brand created successfully', brand, 201);
+      } catch (err) {
+        return next(err);
+      }
+    },
+  ];
+}
+
+export function updateBrand() {
+  return [
+    body('name').trim().notEmpty().withMessage('Name is required'),
+    body('description').trim().notEmpty().withMessage('Description is required'),
+    body('status')
+      .notEmpty()
+      .withMessage('Status is required')
+      .isInt({ min: 1 })
+      .withMessage('Status must be a positive integer'),
+    param('id')
+      .notEmpty()
+      .withMessage('Id is required')
+      .isInt({ min: 1 })
+      .withMessage('Id must be a positive integer'),
+
+    async (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(new ErrorResponse('Validation fields', errors.array(), 400));
+      }
+
+      try {
+        const { id } = req.params;
+        const { name, description, status } = req.body;
+        const brand = await Brand.findByPk(id);
+
+        if (!brand) {
+          return next(new ErrorResponse('Brand not found', null, 404));
+        }
+
+        brand.name_brand = name;
+        brand.description_brand = description;
+        brand.status_brand = status;
+
+        await brand.save();
+        return successHandler(req, res, 'Brand updated successfully', brand, 200);
+      } catch (err) {
+        return next(err);
+      }
+    },
+  ];
+}
+
+export function deleteBrand() {
+  return [
+    param('id')
+      .notEmpty()
+      .withMessage('Id is required')
+      .isInt({ min: 1 })
+      .withMessage('Id must be a positive integer'),
+
+    async (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(new ErrorResponse('Validation fields', errors.array(), 400));
+      }
+      try {
+        const { id } = req.params;
+        const brand = await Brand.findByPk(id);
+
+        if (!brand) {
+          return next(new ErrorResponse('Brand not found', null, 404));
+        }
+        await brand.destroy();
+        return successHandler(req, res, 'Brand deleted successfully', brand.id_brand, 200);
+      } catch (err) {
+        return next(err);
+      }
+    },
+  ];
+}
+
+export function getAllBrands() {
+  return [
+    async (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(new ErrorResponse('Validation fields', errors.array(), 400));
+      }
+      try {
+        const brands = await Brand.findAll({
+          attributes: ['id_brand', 'name_brand', 'description_brand', 'status_brand'],
+        });
+
+        if (!brands.length) {
+          return next(new ErrorResponse('Brands not found', null, 404));
+        }
+        return successHandler(req, res, 'Brands retrieved successfully', brands, 200);
+      } catch (err) {
+        return next(err);
+      }
+    },
+  ];
+}
+
+export function getBrandById() {
+  return [
+    param('id')
+      .notEmpty()
+      .withMessage('Id is required')
+      .isInt({ min: 1 })
+      .withMessage('Id must be a positive integer'),
+
+    async (req, res, next) => {
       const { id } = req.params;
-      const { name, description, status } = req.body;
-      const brand = await Brand.findByPk(id);
+      const errors = validationResult(req);
 
-      if (!brand) {
-        return next(new ErrorResponse('Brand not found', null, 404));
+      if (!errors.isEmpty()) {
+        return next(new ErrorResponse('Validation fields', errors.array(), 400));
       }
-
-      brand.name_brand = name;
-      brand.description_brand = description;
-      brand.status_brand = status;
-
-      await brand.save();
-      return successHandler(req, res, 'Brand updated successfully', brand, 200);
-    } catch (err) {
-      return next(err);
-    }
-  },
-];
-
-exports.deleteBrand = [
-  param('id')
-    .notEmpty()
-    .withMessage('Id is required')
-    .isInt({ min: 1 })
-    .withMessage('Id must be a positive integer'),
-
-  async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new ErrorResponse('Validation fields', errors.array(), 400));
-    }
-    try {
-      const { id } = req.params;
-      const brand = await Brand.findByPk(id);
-
-      if (!brand) {
-        return next(new ErrorResponse('Brand not found', null, 404));
+      try {
+        const brand = await Brand.findByPk(id, {
+          attributes: ['id_brand', 'name_brand', 'description_brand', 'status_brand'],
+        });
+        if (!brand) {
+          return next(new ErrorResponse('Brand not found', null, 404));
+        }
+        return successHandler(req, res, 'Brand retrieved successfully', brand, 200);
+      } catch (err) {
+        return next(err);
       }
-      await brand.destroy();
-      return successHandler(req, res, 'Brand deleted successfully', brand.id_brand, 200);
-    } catch (err) {
-      return next(err);
-    }
-  },
-];
-
-exports.getAllBrands = [
-  async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new ErrorResponse('Validation fields', errors.array(), 400));
-    }
-    try {
-      const brands = await Brand.findAll({
-        attributes: ['id_brand', 'name_brand', 'description_brand', 'status_brand'],
-      });
-
-      if (!brands.length) {
-        return next(new ErrorResponse('Brands not found', null, 404));
-      }
-      return successHandler(req, res, 'Brands retrieved successfully', brands, 200);
-    } catch (err) {
-      return next(err);
-    }
-  },
-];
-
-exports.getBrandById = [
-  param('id')
-    .notEmpty()
-    .withMessage('Id is required')
-    .isInt({ min: 1 })
-    .withMessage('Id must be a positive integer'),
-
-  async (req, res, next) => {
-    const { id } = req.params;
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return next(new ErrorResponse('Validation fields', errors.array(), 400));
-    }
-    try {
-      const brand = await Brand.findByPk(id, {
-        attributes: ['id_brand', 'name_brand', 'description_brand', 'status_brand'],
-      });
-      if (!brand) {
-        return next(new ErrorResponse('Brand not found', null, 404));
-      }
-      return successHandler(req, res, 'Brand retrieved successfully', brand, 200);
-    } catch (err) {
-      return next(err);
-    }
-  },
-];
+    },
+  ];
+}

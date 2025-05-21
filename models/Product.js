@@ -1,14 +1,13 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('@config/database');
-const Brand = require('@models/Brand');
-const Category = require('@models/Category');
-const Composition = require('@models/Composition');
-const Color = require('@models/Color');
-const State = require('@models/State');
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '#config/database';
+import Brand from '#models/Brand';
+import Category from '#models/Category';
+import Composition from '#models/Composition';
+import Color from '#models/Color';
+import State from '#models/State';
 
 class Product extends Model {}
 
-module.exports = {};
 Product.init(
   {
     id_product: {
@@ -92,4 +91,4 @@ Product.init(
   }
 );
 
-module.exports = Product;
+export default Product;

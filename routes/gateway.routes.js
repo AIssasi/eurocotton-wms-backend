@@ -1,7 +1,7 @@
-const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+import express from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 const router = express.Router();
-const { protect } = require('@middleware/auth/auth.middleware');
+import { protect } from '#middleware/auth/auth.middleware';
 
 router.post(
   '/test',
@@ -15,4 +15,4 @@ router.post(
   })
 );
 
-module.exports = router;
+export default router;

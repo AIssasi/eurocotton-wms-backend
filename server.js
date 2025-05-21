@@ -1,41 +1,29 @@
-require('module-alias/register');
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const morganMiddleware = require('@middleware/morgan/morgan.middleware');
-const dotenv = require('dotenv');
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import { connectToDatabase } from '#config/database';
+import { getEnv } from '#config/environment';
+const env = getEnv();
+import morganMiddleware from '#middleware/morgan/morgan.middleware';
+import helmet from 'helmet';
+import cors from 'cors';
+import errorHandler from '#middleware/error/errorHandler.middleware';
+import log from '#middleware/logs/logger.middleware';
 
-if (process.env.NODE_ENV === 'production') {
-  dotenv.config({
-    path: '.env.production',
-  });
-} else {
-  dotenv.config({
-    path: '.env.development',
-  });
-}
-const sequelize = require('@config/database');
-const helmet = require('helmet');
-const cors = require('cors');
-const errorHandler = require('@middleware/error/errorHandler.middleware');
-const log = require('@middleware/logs/logger.middleware');
-
-const { DB_SYNC, DB_SYNC_FORCE } = process.env;
-
-const authRoutes = require('@routes/auth.routes');
-const userRoutes = require('@routes/user.routes');
-const quickRoutes = require('@routes/quick.routes');
-const rolesRoutes = require('@routes/roles.routes');
-const panicRoutes = require('@routes/panic.routes');
-const productRoutes = require('@routes/product.routes');
-const gatewayRoutes = require('@routes/gateway.routes');
-const categoryRoutes = require('@routes/category.routes');
-const statusRoutes = require('@routes/status.routes');
-const colorRoutes = require('@routes/color.routes');
-const brandsRoutes = require('@routes/brand.routes');
-const compositionRoutes = require('@routes/composition.routes');
-const warehousesRoutes = require('@routes/warehouses.routes');
-const permissionsRoutes = require('@routes/permissions.routes');
-const factorRoutes = require('@routes/factor.routes');
+import authRoutes from '#routes/auth.routes';
+import userRoutes from '#routes/user.routes';
+import quickRoutes from '#routes/quick.routes';
+import rolesRoutes from '#routes/roles.routes';
+import panicRoutes from '#routes/panic.routes';
+import productRoutes from '#routes/product.routes';
+import gatewayRoutes from '#routes/gateway.routes';
+import categoryRoutes from '#routes/category.routes';
+import statusRoutes from '#routes/status.routes';
+import colorRoutes from '#routes/color.routes';
+import brandsRoutes from '#routes/brand.routes';
+import compositionRoutes from '#routes/composition.routes';
+import warehousesRoutes from '#routes/warehouses.routes';
+import permissionsRoutes from '#routes/permissions.routes';
+import factorRoutes from '#routes/factor.routes';
 
 const app = express();
 app.use(morganMiddleware);
@@ -70,18 +58,12 @@ app.use(errorHandler);
 
 // Sincronizar los modelos con la base de datos
 (async () => {
-  if (DB_SYNC === 'true' && DB_SYNC_FORCE === 'false') {
-    await sequelize.sync();
-  } else if (DB_SYNC === 'true' && DB_SYNC_FORCE === 'true') {
-    await sequelize.sync({ force: true });
-  } else {
-    await sequelize.authenticate();
-  }
+  await connectToDatabase();
 
-  const PORT = process.env.PORT || 3000;
+  const PORT = env.PORT || 3000;
 
   app.listen(PORT, async () => {
-    log.warn(`🟨 ENVIRONMENT: ${process.env.NODE_ENV} 🟨`);
+    log.warn(`🟨 ENVIRONMENT: ${env.NODE_ENV} 🟨`);
     log.debug(`🟦 Server running on port: ${PORT}`);
   });
 })();

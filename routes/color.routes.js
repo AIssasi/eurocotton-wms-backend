@@ -1,12 +1,12 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { protect } = require('@middleware/auth/auth.middleware');
-const {
+import { protect } from '#middleware/auth/auth.middleware';
+import {
   createColor,
   updateColor,
   deleteColor,
   getAllColors,
-} = require('@controllers/colors.controller');
+} from '#controllers/colors.controller';
 
 router.post('/', protect, createColor);
 // Ruta protegida para actualizar un color
@@ -16,4 +16,4 @@ router.delete('/:id', protect, deleteColor);
 
 router.get('/', protect, getAllColors);
 
-module.exports = router;
+export default router;
