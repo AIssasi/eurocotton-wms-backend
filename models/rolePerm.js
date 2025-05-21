@@ -1,7 +1,7 @@
 // models/Product.js
 
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('@config/database');
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '#config/database';
 
 // Define el modelo Product
 class RolePerm extends Model {}
@@ -44,4 +44,4 @@ RolePerm.init(
   }
 );
 
-module.exports = RolePerm;
+export default RolePerm;

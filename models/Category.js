@@ -1,6 +1,6 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('@config/database');
-const State = require('@models/State');
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '#config/database';
+import State from '#models/State';
 
 class Category extends Model {}
 
@@ -43,4 +43,4 @@ Category.init(
     underscored: true,
   }
 );
-module.exports = Category;
+export default Category;

@@ -1,13 +1,13 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { protect } = require('@middleware/auth/auth.middleware');
-const {
+import { protect } from '#middleware/auth/auth.middleware';
+import {
   getAllWarehouses,
   deleteWarehouse,
   getWarehouseById,
   updateWarehouse,
   createWarehouse,
-} = require('@controllers/warehouses.controller');
+} from '#controllers/warehouses.controller';
 
 router.get('/', protect, getAllWarehouses);
 router.delete('/:id', protect, deleteWarehouse);
@@ -15,4 +15,4 @@ router.get('/:id', protect, getWarehouseById);
 router.put('/:id', protect, updateWarehouse);
 router.post('/', protect, createWarehouse);
 
-module.exports = router;
+export default router;

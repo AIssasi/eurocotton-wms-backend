@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { protect } = require('@middleware/auth/auth.middleware');
-const { createPackingFactor, getAllPackingFactor } = require('@controllers/factor.controller');
+import { protect } from '#middleware/auth/auth.middleware';
+import { createPackingFactor, getAllPackingFactor } from '#controllers/factor.controller';
 
 router.post('/', protect, createPackingFactor);
 router.get('/', protect, getAllPackingFactor);
 
-module.exports = router;
+export default router;

@@ -1,5 +1,5 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('@config/database');
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '#config/database';
 
 class Permission extends Model {}
 
@@ -32,4 +32,4 @@ Permission.init(
     underscored: true, // Utiliza nombres de columnas en formato snake_case
   }
 );
-module.exports = Permission;
+export default Permission;

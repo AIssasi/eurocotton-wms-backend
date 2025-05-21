@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-exports.deleteFile = async (req, res, next) => {
+export function deleteFile(req, res, next) {
   const fileName = req.params.fileName;
 
   try {
@@ -20,9 +20,9 @@ exports.deleteFile = async (req, res, next) => {
     // Manejar errores
     return next(error);
   }
-};
+}
 
-exports.deleteAllFiles = async (req, res, next) => {
+export function deleteAllFiles(req, res, next) {
   try {
     // Directorio de la carpeta de archivos a eliminar
     const directoryPath = path.join(__dirname, '..', 'uploads');
@@ -61,4 +61,4 @@ exports.deleteAllFiles = async (req, res, next) => {
     // Manejar errores
     return next(error);
   }
-};
+}

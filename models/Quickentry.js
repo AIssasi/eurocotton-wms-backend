@@ -1,6 +1,6 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('@config/database');
-const PackingFactor = require('@models/Packingfactor');
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '#config/database';
+import PackingFactor from '#models/Packingfactor';
 
 class QuickEntry extends Model {}
 
@@ -49,4 +49,4 @@ QuickEntry.init(
   }
 );
 
-module.exports = QuickEntry;
+export default QuickEntry;

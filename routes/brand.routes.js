@@ -1,13 +1,13 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { protect } = require('@middleware/auth/auth.middleware');
-const {
+import { protect } from '#middleware/auth/auth.middleware';
+import {
   createBrand,
   updateBrand,
   deleteBrand,
   getAllBrands,
   getBrandById,
-} = require('@controllers/brand.controller');
+} from '#controllers/brand.controller';
 
 router.post('/', protect, createBrand);
 router.put('/:id', protect, updateBrand);
@@ -15,4 +15,4 @@ router.delete('/:id', protect, deleteBrand);
 router.get('/', protect, getAllBrands);
 router.get('/:id', protect, getBrandById);
 
-module.exports = router;
+export default router;

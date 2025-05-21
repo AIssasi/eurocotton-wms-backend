@@ -1,7 +1,7 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('@config/database');
-const Warehouse = require('@models/Warehouse');
-const OrderType = require('@models/orderType');
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '#config/database';
+import Warehouse from '#models/Warehouse';
+import OrderType from '#models/orderType';
 
 class Order extends Model {}
 
@@ -63,4 +63,4 @@ Order.init(
   }
 );
 
-module.exports = Order;
+export default Order;

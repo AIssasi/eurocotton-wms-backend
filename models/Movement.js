@@ -1,7 +1,7 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('@config/database');
-const Product = require('@models/Product');
-const Warehouse = require('@models/Warehouse');
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '#config/database';
+import Product from '#models/Product';
+import Warehouse from '#models/Warehouse';
 
 class Movement extends Model {}
 
@@ -63,4 +63,4 @@ Movement.init(
   }
 );
 
-module.exports = Movement;
+export default Movement;

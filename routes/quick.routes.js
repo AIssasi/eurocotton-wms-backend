@@ -1,14 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { protect } = require('@middleware/auth/auth.middleware');
-const {
-  getAllQuickentry,
-  createQuickentry,
-  deleteEntry,
-} = require('@controllers/quick.controller');
+import { protect } from '#middleware/auth/auth.middleware';
+import { getAllQuickentry, createQuickentry, deleteEntry } from '#controllers/quick.controller';
 
 router.post('/', protect, createQuickentry);
 router.get('/', protect, getAllQuickentry);
 router.delete('/:id', protect, deleteEntry);
 
-module.exports = router;
+export default router;

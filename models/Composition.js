@@ -1,5 +1,5 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('@config/database');
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '#config/database';
 
 class Composition extends Model {}
 
@@ -35,4 +35,4 @@ Composition.init(
   }
 );
 
-module.exports = Composition;
+export default Composition;

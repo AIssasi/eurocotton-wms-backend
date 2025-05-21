@@ -1,25 +1,24 @@
-const sequelize = require('@config/database'); // Importar la instancia de Sequelize
-
-const User = require('@models/User');
-const Role = require('@models/Role');
-const Permission = require('@models/Permission');
-const RolePerm = require('@models/rolePerm');
-const Product = require('@models/Product');
-const Brand = require('@models/Brand');
-const Category = require('@models/Category');
-const Composition = require('@models/Composition');
-const Color = require('@models/Color');
-const State = require('@models/State');
-const Warehouse = require('@models/Warehouse');
-const Provider = require('@models/Provider');
-const Order = require('@models/Order');
-const orderType = require('@models/orderType');
-const Movement = require('@models/Movement');
-const Inventory = require('@models/Inventory');
-const itemOrder = require('@models/itemOrder');
-const Image = require('@models/Image');
-const QuickEntry = require('@models/Quickentry');
-const PackingFactor = require('@models/Packingfactor');
+import sequelize from '#config/database';
+import User from '#models/User';
+import Role from '#models/Role';
+import Permission from '#models/Permission';
+import RolePerm from '#models/rolePerm';
+import Product from '#models/Product';
+import Brand from '#models/Brand';
+import Category from '#models/Category';
+import Composition from '#models/Composition';
+import Color from '#models/Color';
+import State from '#models/State';
+import Warehouse from '#models/Warehouse';
+import Provider from '#models/Provider';
+import Order from '#models/Order';
+import orderType from '#models/orderType';
+import Movement from '#models/Movement';
+import Inventory from '#models/Inventory';
+import itemOrder from '#models/itemOrder';
+import Image from '#models/Image';
+import QuickEntry from '#models/Quickentry';
+import PackingFactor from '#models/Packingfactor';
 
 const initModels = () => {
   // Definir relaciones
@@ -105,7 +104,7 @@ const initModels = () => {
 // Inicializar modelos y relaciones
 initModels();
 
-module.exports = {
+export {
   sequelize,
   User,
   Role,
