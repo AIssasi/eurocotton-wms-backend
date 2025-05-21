@@ -1,8 +1,9 @@
+import { getEnv } from '#config/environment';
+const env = getEnv();
 import jwt from 'jsonwebtoken';
 import ErrorResponse from '#utils/errorResponse';
 
-const { JWT_SECRET } = process.env;
-
+const { JWT_SECRET } = env;
 export function protect(req, res, next) {
   // Primero intentamos obtener el token desde el encabezado Authorization
   const authHeader = req.header('Authorization');
