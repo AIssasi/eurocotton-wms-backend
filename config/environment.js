@@ -23,4 +23,6 @@ export const getEnv = () => ({
   DB_SSL_REJECT_UNAUTHORIZED: process.env.DB_SSL_REJECT_UNAUTHORIZED,
   DB_SSL_CA_PATH: process.env.DB_SSL_CA_PATH,
   NODE_ENV: process.env.NODE_ENV,
+  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_SECRET_REFRESH: process.env.JWT_SECRET_REFRESH,
 });
