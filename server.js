@@ -33,7 +33,7 @@ app.use(helmet());
 // Configuración CORS
 app.use(
   cors({
-    origin: '*', // URL de tu frontend
+    origin: true, // URL de tu frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true, // Permite el envío de credenciales como cookies
   })
