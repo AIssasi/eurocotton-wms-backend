@@ -3,149 +3,139 @@ import successHandler from '#middleware/success/successHandler.middleware';
 import ErrorResponse from '#utils/errorResponse';
 import { body, param, validationResult } from 'express-validator';
 
-export function createPermission() {
-  return [
-    body('name').trim().notEmpty().withMessage('Name is required'),
-    body('description').trim().notEmpty().withMessage('Description is required'),
+export const createPermission = [
+  body('name').trim().notEmpty().withMessage('Name is required'),
+  body('description').trim().notEmpty().withMessage('Description is required'),
 
-    async (req, res, next) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 400));
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
+
+    try {
+      const { name: name_permission, description: description_permission } = req.body;
+
+      const existingPermission = await Permission.findOne({ where: { name_permission } });
+      if (existingPermission) {
+        return next(new ErrorResponse('The permission already exists', existingPermission, 400));
       }
 
-      try {
-        const { name: name_permission, description: description_permission } = req.body;
+      const permission = await Permission.create({ name_permission, description_permission });
 
-        const existingPermission = await Permission.findOne({ where: { name_permission } });
-        if (existingPermission) {
-          return next(new ErrorResponse('The permission already exists', existingPermission, 400));
-        }
+      return successHandler(req, res, 'Permission created successfully', permission, 201);
+    } catch (error) {
+      return next(error);
+    }
+  },
+];
 
-        const permission = await Permission.create({ name_permission, description_permission });
+export const updatePermission = [
+  body('name').trim().notEmpty().withMessage('Names is required'),
+  body('description').trim().notEmpty().withMessage('Description is required'),
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isInt({ min: 1 })
+    .withMessage('Id must be a positive integer'),
 
-        return successHandler(req, res, 'Permission created successfully', permission, 201);
-      } catch (error) {
-        return next(error);
-      }
-    },
-  ];
-}
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
 
-export function updatePermission() {
-  return [
-    body('name').trim().notEmpty().withMessage('Names is required'),
-    body('description').trim().notEmpty().withMessage('Description is required'),
-    param('id')
-      .notEmpty()
-      .withMessage('Id is required')
-      .isInt({ min: 1 })
-      .withMessage('Id must be a positive integer'),
+    try {
+      const { id } = req.params;
+      const { name, description } = req.body;
+      const permission = await Permission.findByPk(id);
 
-    async (req, res, next) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 400));
-      }
-
-      try {
-        const { id } = req.params;
-        const { name, description } = req.body;
-        const permission = await Permission.findByPk(id);
-
-        if (!permission) {
-          return next(new ErrorResponse('Permission not found', null, 404));
-        }
-
-        permission.name_permission = name;
-        permission.description_permission = description;
-
-        await permission.save();
-        return successHandler(req, res, 'Permission updated successfully', permission, 200);
-      } catch (error) {
-        return next(error);
-      }
-    },
-  ];
-}
-
-export function deletePermission() {
-  return [
-    param('id')
-      .notEmpty()
-      .withMessage('Id is required')
-      .isInt({ min: 1 })
-      .withMessage('Id must be a positive integer'),
-
-    async (req, res, next) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 400));
+      if (!permission) {
+        return next(new ErrorResponse('Permission not found', null, 404));
       }
 
-      try {
-        const { id } = req.params;
-        const permissions = await Permission.findByPk(id);
+      permission.name_permission = name;
+      permission.description_permission = description;
 
-        if (!permissions) {
-          return next(new ErrorResponse('Permission not found', null, 404));
-        }
+      await permission.save();
+      return successHandler(req, res, 'Permission updated successfully', permission, 200);
+    } catch (error) {
+      return next(error);
+    }
+  },
+];
 
-        await permissions.destroy();
-        return successHandler(req, res, 'deleted successfully', permissions.id_permission, 200);
-      } catch (error) {
-        return next(error);
-      }
-    },
-  ];
-}
+export const deletePermission = [
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isInt({ min: 1 })
+    .withMessage('Id must be a positive integer'),
 
-export function getAllPermissions() {
-  return [
-    async (req, res, next) => {
-      try {
-        const permissions = await Permission.findAll({
-          attributes: ['id_permission', 'name_permission', 'description_permission'],
-        });
-        if (!permissions.length) {
-          return next(new ErrorResponse('Permissions not found', null, 404));
-        }
-        return successHandler(req, res, 'Permissions retrieved successfully', permissions, 200);
-      } catch (err) {
-        return next(err);
-      }
-    },
-  ];
-}
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
 
-export function getPermissionById() {
-  return [
-    param('id')
-      .notEmpty()
-      .withMessage('Id is required')
-      .isInt({ min: 1 })
-      .withMessage('Id must be a positive integer'),
+    try {
+      const { id } = req.params;
+      const permissions = await Permission.findByPk(id);
 
-    async (req, res, next) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return next(new ErrorResponse('Validation fields', errors.array(), 400));
+      if (!permissions) {
+        return next(new ErrorResponse('Permission not found', null, 404));
       }
 
-      try {
-        const { id } = req.params;
-        const permissions = await Permission.findByPk(id, {
-          attributes: ['id_permission', 'name_permission', 'description_permission'],
-        });
+      await permissions.destroy();
+      return successHandler(req, res, 'deleted successfully', permissions.id_permission, 200);
+    } catch (error) {
+      return next(error);
+    }
+  },
+];
 
-        if (!permissions) {
-          return next(new ErrorResponse('Permissions not found', null, 404));
-        }
-
-        return successHandler(req, res, 'Permissions retrieved successfully', permissions, 200);
-      } catch (err) {
-        return next(err);
+export const getAllPermissions = [
+  async (req, res, next) => {
+    try {
+      const permissions = await Permission.findAll({
+        attributes: ['id_permission', 'name_permission', 'description_permission'],
+      });
+      if (!permissions.length) {
+        return next(new ErrorResponse('Permissions not found', null, 404));
       }
-    },
-  ];
-}
+      return successHandler(req, res, 'Permissions retrieved successfully', permissions, 200);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
+export const getPermissionById = [
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isInt({ min: 1 })
+    .withMessage('Id must be a positive integer'),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ErrorResponse('Validation fields', errors.array(), 400));
+    }
+
+    try {
+      const { id } = req.params;
+      const permissions = await Permission.findByPk(id, {
+        attributes: ['id_permission', 'name_permission', 'description_permission'],
+      });
+
+      if (!permissions) {
+        return next(new ErrorResponse('Permissions not found', null, 404));
+      }
+
+      return successHandler(req, res, 'Permissions retrieved successfully', permissions, 200);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
