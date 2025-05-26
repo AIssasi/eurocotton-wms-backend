@@ -33,7 +33,7 @@ app.use(helmet());
 // Configuración CORS
 app.use(
   cors({
-    origin: 'https://wms.omnieuro.app', // URL de tu frontend
+    origin: '*', // URL de tu frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true, // Permite el envío de credenciales como cookies
   })
