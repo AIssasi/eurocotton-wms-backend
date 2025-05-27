@@ -1,3 +1,5 @@
+import { getEnv } from '#config/environment';
+const env = getEnv();
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Op } from 'sequelize';
@@ -6,6 +8,7 @@ import ErrorResponse from '#utils/errorResponse';
 import successHandler from '#middleware/success/successHandler.middleware';
 import { body, validationResult } from 'express-validator';
 
+const { NODE_ENV } = env;
 const { JWT_SECRET, JWT_SECRET_REFRESH } = process.env;
 
 export const register = [
@@ -196,15 +199,14 @@ export const login = [
       });
       res.cookie('accessToken', token, {
         httpOnly: true,
-        secure: false,
-        sameSite: 'Strict',
+        secure: NODE_ENV === 'production',
+        sameSite: NODE_ENV === 'production' ? 'None' : 'Strict',
       });
 
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
-        // secure: process.env.NODE_ENV === 'production',
-        secure: false,
-        sameSite: 'Strict',
+        secure: NODE_ENV === 'production',
+        sameSite: NODE_ENV === 'production' ? 'None' : 'Strict',
       });
 
       return successHandler(req, res, 'Login successfull', null, 200);
@@ -238,15 +240,15 @@ export const logout = [
       // Eliminar cookies de los tokens
       res.cookie('accessToken', '', {
         httpOnly: false,
-        secure: false, // Usa `false` en desarrollo
-        sameSite: 'Strict',
+        secure: NODE_ENV === 'production',
+        sameSite: NODE_ENV === 'production' ? 'None' : 'Strict',
         expires: new Date(0), // Establecer la cookie para que expire inmediatamente
       });
 
       res.cookie('refreshToken', '', {
         httpOnly: false,
-        secure: false, // Usa `false` en desarrollo
-        sameSite: 'Strict',
+        secure: NODE_ENV === 'production',
+        sameSite: NODE_ENV === 'production' ? 'None' : 'Strict',
         expires: new Date(0), // Establecer la cookie para que expire inmediatamente
       });
       // Responder con éxito usando el successHandler
